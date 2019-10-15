@@ -1,0 +1,34 @@
+{% extends "base_template.html" %}
+{% block title %}SL+{% endblock %}
+{% block content %}
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">SL+</h1>
+
+            </div>
+            <h3>Bienvenido</h3>
+            <p>Motor de busqueda de perfiles de usuario en la plataforma LinkedIn.
+                <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
+            </p>
+            <p>Escriba los criterios de busqueda</p>
+            <form class="m-t" role="form" action="resultados/" method="POST">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="cadena" name="cadena" placeholder="Criterio de busqueda" required="">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">Buscar</button>
+
+                
+                
+                <a class="btn btn-sm btn-white btn-block" href="#">Ver historial de busqueda</a>
+            </form>
+            
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+{% endblock %}
