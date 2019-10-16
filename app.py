@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 from searchProfiles import searchprofiles
 from GestorSelenium import StartSelenium
+from scrappyProfile import scrappyprofile
 @app.route('/')
 def index():
 
@@ -13,7 +14,7 @@ def resultados():
     if request.method== "POST":
         cadena = request.form["cadena"]
         print("valor obtenido:"+cadena)
-        resultado = searchprofiles(cadena,driver)
+        resultado = searchprofiles(cadena)
         paquete = []
         paquete.append(cadena)
         paquete.append(len(resultado))
@@ -27,15 +28,12 @@ def verperfil():
     if request.method == "GET":
         url = request.args.get("url","")
         print("URL solicitada: "+url)
+        scrappyprofile(url)
         return render_template("verPerfil.html", paquete=url)
     return render_template('index.html')
 
 
 global driver
-
-
 if __name__ == "__main__":
-    driver = StartSelenium()
-    print("Driver recibido")
     app.run(debug=True)
 
