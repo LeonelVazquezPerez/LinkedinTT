@@ -37,9 +37,11 @@ def searchprofiles(termtofind):
     password.send_keys(passwordStr)
     driver.find_element_by_css_selector('.btn__primary--large.from__button--floating').click()
     print("Searching")
+    time.sleep(3)
+
     driver.find_element_by_css_selector('.search-global-typeahead__input').send_keys(termtofind, Keys.ENTER)
 
-    time.sleep(5)
+    time.sleep(3)
 
     # GET NAMES
     names = driver.find_elements_by_css_selector('.name.actor-name')
@@ -67,5 +69,8 @@ def searchprofiles(termtofind):
         print(user.name)
         print(user.company)
         i += 1
+
+    driver.close()
+
     return users
 

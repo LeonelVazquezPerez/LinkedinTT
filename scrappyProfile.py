@@ -11,17 +11,31 @@ def scrappyprofile(url):
     driver = StartSelenium()
     driver.get(url)
 
+    time.sleep(3)
+
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        time.sleep(3)
+
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+
+        last_height = new_height
+
     pagina = driver.page_source
     page = open("source.txt", "w")
     selec = Selector(text=pagina)
     page.write(pagina)
-    perfil = Usuario.Usuario()
+
     url_imagen = selec.xpath('//*[starts-with(@class,  "pv-top-card-section__photo presence-entity__image EntityPhoto-circle-9 lazy-image loaded ember-view")]/@src').extract()
     print("resultado: "+ str(url_imagen))
 
     if len(url_imagen) > 0 :
         nombre_local_imagen = "foto.jpg" # El nombre con el que queremos guardarla
-        perfil.img = nombre_local_imagen
         imagen = requests.get(url_imagen[0]).content
         with open(nombre_local_imagen, 'wb') as handler:
             handler.write(imagen)
@@ -36,3 +50,6 @@ def scrappyprofile(url):
     print("title: "+ str(title))
     print("address: "+ str(address))
     print("contacts: "+ str(contacts))
+
+
+
