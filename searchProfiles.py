@@ -4,6 +4,8 @@ from selenium import webdriver
 import time
 from parsel import Selector
 
+from Usuario import Usuario
+
 
 def searchprofiles(termtofind):
     # READ ACCOUNTS ON FILE
@@ -39,6 +41,13 @@ def searchprofiles(termtofind):
 
     time.sleep(5)
 
+    # GET NAMES
+    names = driver.find_elements_by_css_selector('.name.actor-name')
+
+    # GET COMPANIES
+    companies = driver.find_elements_by_css_selector('.subline-level-1.t-14.t-black.t-normal.search-result__truncate')
+
+    # GET LINKEDIN PROFILES
     urls = driver.find_elements_by_css_selector('.search-result__result-link.ember-view')
 
     urlslist = []
@@ -48,21 +57,15 @@ def searchprofiles(termtofind):
 
     urlslist = list(dict.fromkeys(urlslist))
 
-    #ademas de obtener la url tambien necesitamos nombre, foto y extracto
-    pagina = driver.page_source
-    page = open("source.txt", "w")
-    selec = Selector(text=pagina)
-    page.write(pagina)
-    names = selec.xpath('//*[starts-with(@class, "name actor-name")]/text()').extract()
-    #print("dato:"+str(names))
-    titles = selec.xpath('//*[starts-with(@class, "subline-level-1 t-14 t-black t-normal search-result__truncate")]/text()').extract()
-    #print("dato: "+str(titles))
+    users = []
 
-    resultados = []
-    print(" total: " + str(len(urlslist)) + " " + str(len(names)) + " " + str(len(titles)))
-    print(str(urlslist))
-    print(str(names))
-    print(str(titles))
+    i = 0
+    while i < len(urlslist):
+        user = Usuario(names[i].text, companies[i].text, urlslist[i])
+        users.append(user)
+        print(names[i].text)
+        print(companies[i].text)
+        print(urlslist[i])
 
+    return users
 
-    return urlslist
