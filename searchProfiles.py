@@ -63,9 +63,9 @@ def searchprofiles(termtofind):
     while i < len(urlslist):
         user = Usuario(names[i].text, companies[i].text, urlslist[i])
         users.append(user)
-        print(names[i].text)
-        print(companies[i].text)
-        print(urlslist[i])
-
+        print(user.url)
+        print(user.name)
+        print(user.company)
+        i += 1
     return users
 

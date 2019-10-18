@@ -4,6 +4,7 @@
 *  version 2.7
 *
 -->
+
 <!DOCTYPE html>
 <html>
 
@@ -97,29 +98,19 @@
                             </div>
                             <div class='hr-line-dashed'></div>
                             {%
-                                for url in paquete[2]:
+                                for user in paquete[2]:
 
                             %}
                             <div class='search-result'>
-                                <h3><a href="verperfil/?url={{url}}">Nombre</a></h3>
-                                <a href='#' class='search-link'>{{url}}</a>
-                                <p>Aqui va el titular</p>
+                                <h3><a href="verperfil/?url={{url}}">{{user.name}}</a></h3>
+                                <p>{{user.company}}</p>
+                                <a href='#' class='search-link'>{{user.url}}</a>
+
                             </div>
+                            <br>
+                            <div class='hr-line-dashed'></div>
                             {%endfor%}
-                            <div class="hr-line-dashed"></div>
-                            <div class="text-center">
-                                <div class="btn-group">
-                                    <button class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
-                                    <button class="btn btn-white active">1</button>
-                                    <button class="btn btn-white">2</button>
-                                    <button class="btn btn-white">3</button>
-                                    <button class="btn btn-white">4</button>
-                                    <button class="btn btn-white">5</button>
-                                    <button class="btn btn-white">6</button>
-                                    <button class="btn btn-white">7</button>
-                                    <button class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
