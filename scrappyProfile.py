@@ -5,7 +5,7 @@ from selenium import webdriver
 import time
 from parsel import Selector
 from GestorSelenium import StartSelenium
-import Usuario
+from Usuario import Usuario
 def scrappyprofile(url):
 
     driver = StartSelenium()
@@ -46,10 +46,13 @@ def scrappyprofile(url):
     title = selec.xpath('//*[starts-with(@class, "mt1 t-18 t-black t-normal")]/text()').extract()
     address = selec.xpath('//*[starts-with(@class, "t-16 t-black t-normal inline-block")]/text()').extract()
     contacts = selec.xpath('//*[starts-with(@class, "ember-view")]/text()').extract()
-    print("name: "+ str(name))
-    print("title: "+ str(title))
-    print("address: "+ str(address))
+    print("name: "+ name[0])
+    print("title: "+ title[0])
+    print("address: "+ address[0])
     print("contacts: "+ str(contacts))
+
+    perfil = Usuario(name[0], title[0], url)
+    return perfil
 
 
 

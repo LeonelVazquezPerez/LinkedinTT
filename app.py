@@ -28,8 +28,8 @@ def verperfil():
     if request.method == "GET":
         url = request.args.get("url","")
         print("URL solicitada: "+url)
-        scrappyprofile(url)
-        return render_template("verPerfil.html", paquete=url)
+        perfil = scrappyprofile(url)
+        return render_template("verPerfil.html", perfil=perfil)
     return render_template('index.html')
 
 
