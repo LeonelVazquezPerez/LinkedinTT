@@ -15,6 +15,8 @@ def resultados():
         cadena = request.form["cadena"]
         print("valor obtenido:"+cadena)
         resultado = searchprofiles(cadena)
+        for res in resultado:
+            print(res.url[28:-1] + ".jpg")
         paquete = []
         paquete.append(cadena)
         paquete.append(len(resultado))

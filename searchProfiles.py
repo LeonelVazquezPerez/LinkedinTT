@@ -2,6 +2,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import time
+import urllib.request
 from parsel import Selector
 
 from Usuario import Usuario
@@ -43,6 +44,8 @@ def searchprofiles(termtofind):
 
     time.sleep(3)
 
+    #GET PHOTOS
+    images = driver.find_elements_by_xpath('//div[@class="presence-entity presence-entity--size-4 ember-view"]/img')
     # GET NAMES
     names = driver.find_elements_by_css_selector('.name.actor-name')
 
@@ -62,12 +65,25 @@ def searchprofiles(termtofind):
     users = []
 
     i = 0
-    while i < len(urlslist):
-        user = Usuario(names[i].text, companies[i].text, urlslist[i])
+    while i < len(names):
+        name = names[i].text
+        if i < len(companies):
+            company = companies[i].text
+        else:
+            company = ""
+
+        if i < len(urlslist):
+            url = urlslist[i]
+            if i < len(images):
+                src = images[i].get_attribute('src')
+                if src is not None:
+                    urllib.request.urlretrieve(src, "static/images/" + urlslist[i][28:-1] + ".jpg")
+        else:
+            url = ""
+
+        user = Usuario(name, company, url)
         users.append(user)
-        print(user.url)
-        print(user.name)
-        print(user.company)
+
         i += 1
 
     driver.close()
