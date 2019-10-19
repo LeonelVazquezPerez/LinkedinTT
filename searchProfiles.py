@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import time
 import urllib.request
+from urllib.parse import unquote
 from parsel import Selector
 
 from Usuario import Usuario
@@ -77,7 +78,7 @@ def searchprofiles(termtofind):
             if i < len(images):
                 src = images[i].get_attribute('src')
                 if src is not None:
-                    urllib.request.urlretrieve(src, "static/images/" + urlslist[i][28:-1] + ".jpg")
+                    urllib.request.urlretrieve(src, "static/img/" + unquote(urlslist[i][28:-1]) + ".jpg")
         else:
             url = ""
 

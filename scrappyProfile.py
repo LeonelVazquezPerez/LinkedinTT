@@ -52,6 +52,9 @@ def scrappyprofile(url):
     print("contacts: "+ str(contacts))
 
     perfil = Usuario(name[0], title[0], url)
+
+    driver.close()
+
     return perfil
 
 
