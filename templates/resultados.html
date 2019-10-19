@@ -47,10 +47,10 @@
                         </div>
                     </li>
                     <li class="">
-                        <a href="index.html"><i class="fa fa-search"></i> <span class="nav-label">Buscador </span></a>
+                        <a href="/"><i class="fa fa-search"></i> <span class="nav-label">Buscador </span></a>
                     </li>
                     <li class="special_link">
-                        <a href="Resultados.html"><i class="fa fa-th-list"></i> <span class="nav-label">Resultados </span></a>
+                        <a href="resultados.html"><i class="fa fa-th-list"></i> <span class="nav-label">Resultados </span></a>
                     </li>
                 </ul>
 
@@ -102,6 +102,11 @@
 
                             %}
                             <div class='search-result'>
+
+                                <div class="profile-image">
+                                    <img src="/static/img/{{user.imagen}}" class="img-circle circle-border m-b-md" alt="{{user.name}}">
+                                </div>
+
                                 <h3><a href="verperfil/?url={{user.url}}">{{user.name}}</a></h3>
                                 <p>{{user.company}}</p>
                                 <a href='#' class='search-link'>{{user.url}}</a>

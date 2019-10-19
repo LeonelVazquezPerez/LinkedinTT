@@ -32,15 +32,11 @@ def scrappyprofile(url):
     page.write(pagina)
 
     url_imagen = selec.xpath('//*[starts-with(@class,  "pv-top-card-section__photo presence-entity__image EntityPhoto-circle-9 lazy-image loaded ember-view")]/@src').extract()
-    print("resultado: "+ str(url_imagen))
 
     if len(url_imagen) > 0 :
-        nombre_local_imagen = "foto.jpg" # El nombre con el que queremos guardarla
-        imagen = requests.get(url_imagen[0]).content
-        with open(nombre_local_imagen, 'wb') as handler:
-            handler.write(imagen)
+        b = 1
     else:
-        print("El perfil no tiene fotografia")
+        b = 0
 
     name = selec.xpath('//*[starts-with(@class, "inline t-24 t-black t-normal break-words")]/text()').extract()
     title = selec.xpath('//*[starts-with(@class, "mt1 t-18 t-black t-normal")]/text()').extract()
@@ -51,7 +47,12 @@ def scrappyprofile(url):
     print("address: "+ address[0])
     print("contacts: "+ str(contacts))
 
-    perfil = Usuario(name[0], title[0], url)
+    if b == 1:
+        imagen = url[28:-1] + ".jpg"
+    else:
+        imagen = "default.jpg"
+
+    perfil = Usuario(name[0], title[0], url, imagen)
 
     driver.close()
 

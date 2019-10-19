@@ -9,7 +9,8 @@ class Usuario:
     publicacion = []
     residencia = []
 
-    def __init__(self, name, company, url):
+    def __init__(self, name, company, url, imagen):
         self.name = name
         self.company = company
         self.url = url
+        self.imagen = imagen

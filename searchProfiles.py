@@ -68,6 +68,8 @@ def searchprofiles(termtofind):
     i = 0
     while i < len(names):
         name = names[i].text
+        imagen = "default.jpg"
+
         if i < len(companies):
             company = companies[i].text
         else:
@@ -78,11 +80,12 @@ def searchprofiles(termtofind):
             if i < len(images):
                 src = images[i].get_attribute('src')
                 if src is not None:
-                    urllib.request.urlretrieve(src, "static/img/" + unquote(urlslist[i][28:-1]) + ".jpg")
+                    imagen = unquote(urlslist[i][28:-1]) + ".jpg"
+                    urllib.request.urlretrieve(src, "static/img/" + imagen)
         else:
             url = ""
 
-        user = Usuario(name, company, url)
+        user = Usuario(name, company, url, imagen)
         users.append(user)
 
         i += 1
