@@ -6,6 +6,7 @@ import time
 from parsel import Selector
 from GestorSelenium import StartSelenium
 from Usuario import Usuario
+from Cargo import Cargo
 def scrappyprofile(url):
 
     driver = StartSelenium()
@@ -42,10 +43,29 @@ def scrappyprofile(url):
     title = selec.xpath('//*[starts-with(@class, "mt1 t-18 t-black t-normal")]/text()').extract()
     address = selec.xpath('//*[starts-with(@class, "t-16 t-black t-normal inline-block")]/text()').extract()
     contacts = selec.xpath('//*[starts-with(@class, "ember-view")]/text()').extract()
-    print("name: "+ name[0])
-    print("title: "+ title[0])
-    print("address: "+ address[0])
-    print("contacts: "+ str(contacts))
+    # Obtenemos los cargos
+    cargos = []
+    css1cargo = selec.xpath(
+        '//*[starts-with(@class, "pv-entity__summary-info pv-entity__summary-info--background-section ")]/h3/text()').extract()
+    cargos += css1cargo
+    cargo = selec.xpath('//*[starts-with(@class, "t-16 t-black t-bold")]/span/text()').extract()
+    cargomas = selec.xpath('//*[starts-with(@class, "t-14 t-black t-bold")]/span/text()').extract()
+    cargomas += cargo
+    i = 1
+    while i < len(cargomas):
+        cargos.append(cargomas[i])
+        i += 2
+
+    # Obtenemos las empresas
+    empresas = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title t-14 t-black t-normal")]/text()').extract()
+    print("name: " + name[0])
+    print("title: " + title[0])
+    print("address: " + address[0])
+    print("contacts: " + str(contacts))
+    print("total: " + str(cargos))
+    print("empresas: " + str(empresas))
+
+    # Obtenemos las aptitudes
 
     if b == 1:
         imagen = url[28:-1] + ".jpg"
@@ -53,8 +73,23 @@ def scrappyprofile(url):
         imagen = "default.jpg"
 
     perfil = Usuario(name[0], title[0], url, imagen)
+    trabajos = []
+    if len(cargos) != len(empresas):
+        for i in range( len(cargos) - len(empresas) ):
+            empresas.append("")
 
-    driver.close()
+    for i in range(len(cargos)):
+        trabajo = Cargo(cargos[i],empresas[i],"","")
+        trabajos.append(trabajo)
+        print("trabajo: "+ trabajo.name)
+        print("empresa: "+ trabajo.empresa)
+    perfil.cargos = trabajos
+
+    #Obtenemos la educacion
+    escuelas = selec.xpath('//*[starts-with(@class, "pv-entity__school-name t-16 t-black t-bold")]/text()').extract()
+
+    print("Escuelas: " + str(escuelas))
+    #driver.close()
 
     return perfil
 

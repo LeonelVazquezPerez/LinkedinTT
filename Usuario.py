@@ -8,6 +8,7 @@ class Usuario:
     patente = []
     publicacion = []
     residencia = []
+    empresas = []
 
     def __init__(self, name, company, url, imagen):
         self.name = name

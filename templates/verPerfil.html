@@ -309,67 +309,24 @@
                 </div>
                 <div class="col-lg-4 m-b-lg">
                     <div id="vertical-timeline" class="vertical-container light-timeline no-margins">
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-briefcase"></i>
+
+                        {%
+                        for cargo in perfil.cargos:%}
+                            <div class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon navy-bg">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>{{cargo.name}}</h2>
+                                    <p>{{cargo.empresa}}</p>
+                                    <p>Ubicacion</p>
+                                    <span class="vertical-date">
+                                        <small>Ene 2000 - Dic 2010 </small>
+                                    </span>
+                                </div>
                             </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 1</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-briefcase"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 2</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-briefcase"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 3</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon blue-bg">
-                                <i class="fa fa-mortar-board"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 4</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-
+                        {%endfor%}
                     </div>
 
                 </div>
