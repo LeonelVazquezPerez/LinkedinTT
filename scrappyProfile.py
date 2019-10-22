@@ -6,6 +6,8 @@ import time
 from parsel import Selector
 from GestorSelenium import StartSelenium
 from Usuario import Usuario
+from Cargo import Cargo
+from Escuela import Escuela
 def scrappyprofile(url):
 
     driver = StartSelenium()
@@ -42,10 +44,30 @@ def scrappyprofile(url):
     title = selec.xpath('//*[starts-with(@class, "mt1 t-18 t-black t-normal")]/text()').extract()
     address = selec.xpath('//*[starts-with(@class, "t-16 t-black t-normal inline-block")]/text()').extract()
     contacts = selec.xpath('//*[starts-with(@class, "ember-view")]/text()').extract()
-    print("name: "+ name[0])
-    print("title: "+ title[0])
-    print("address: "+ address[0])
-    print("contacts: "+ str(contacts))
+    # Obtenemos los cargos
+    cargos = []
+    css1cargo = selec.xpath(
+        '//*[starts-with(@class, "pv-entity__summary-info pv-entity__summary-info--background-section ")]/h3/text()').extract()
+    cargos += css1cargo
+    cargo = selec.xpath('//*[starts-with(@class, "t-16 t-black t-bold")]/span/text()').extract()
+    cargomas = selec.xpath('//*[starts-with(@class, "t-14 t-black t-bold")]/span/text()').extract()
+    cargomas += cargo
+    i = 1
+    while i < len(cargomas):
+        cargos.append(cargomas[i])
+        i += 2
+
+    # Obtenemos las empresas
+    empresas = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title t-14 t-black t-normal")]/text()').extract()
+    # Obtenemos las fechas por empresa
+    fechas = selec.xpath('//*[starts-with(@class, "pv-entity__date-range t-14 t-black--light t-normal")]/span/text()').extract()
+    print("name: " + name[0])
+    print("title: " + title[0])
+    print("address: " + address[0])
+    print("contacts: " + str(contacts))
+    print("total: " + str(cargos))
+
+
 
     if b == 1:
         imagen = url[28:-1] + ".jpg"
@@ -53,7 +75,49 @@ def scrappyprofile(url):
         imagen = "default.jpg"
 
     perfil = Usuario(name[0], title[0], url, imagen)
+    trabajos = []
+    if len(cargos) != len(empresas):
+        for i in range( len(cargos) - len(empresas) ):
+            empresas.append("")
+    if len(cargos) != int(len(fechas)/2):
+        for i in range(len(cargos) - int(len(fechas)/2)):
+            fechas.append("")
+            fechas.append("")
 
+    print("empresas: " + str(empresas))
+    print("fechas: " + str(fechas))
+    for i in range(len(cargos)):
+        fechas.pop(0)
+        trabajo = Cargo(cargos[i], empresas[i], "", fechas[i])
+        trabajos.append(trabajo)
+        print("insertado: "+trabajo.fecha)
+    perfil.cargos = trabajos
+    perfil.NoCargos = len(trabajos)
+    #Obtenemos la educacion
+    escuelas = selec.xpath('//*[starts-with(@class, "pv-entity__school-name t-16 t-black t-bold")]/text()').extract()
+
+    if len(escuelas) > 0:
+
+        titulos = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title pv-entity__degree-name t-14 t-black t-normal")]/span/text()').extract()
+        disciplinas = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title pv-entity__fos t-14 t-black t-normal")]/span/text()').extract()
+        fechas = selec.xpath('//*[starts-with(@class, "pv-entity__dates t-14 t-black--light t-normal")]/span/time/text()').extract()
+
+
+    educacion = []
+    for i in range(len(escuelas)):
+        titulos.pop(0)
+        disciplinas.pop(0)
+        escuela = Escuela(escuelas[i])
+        escuela.titulacion= titulos[i]
+        escuela.disciplina = disciplinas[i]
+        escuela.fecha = fechas[i] + " - "+fechas[i+1]
+        print("Escuelas: " + escuela.name)
+        print("Titulos: " + escuela.titulacion)
+        print("Disciplinas: " + escuela.disciplina)
+        #print("fechas: " + str(fechas))
+        educacion.append(escuela)
+
+    perfil.escuelas = educacion
     driver.close()
 
     return perfil

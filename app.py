@@ -21,6 +21,7 @@ def resultados():
         paquete.append(cadena)
         paquete.append(len(resultado))
         paquete.append(resultado)
+
         return render_template("resultados.html", paquete=paquete)
     return render_template('resultados.html')
 

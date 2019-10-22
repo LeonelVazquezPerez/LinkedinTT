@@ -108,10 +108,10 @@
                         <tbody>
                         <tr>
                             <td>
-                                <strong>142</strong> Publicaciones
+                                <strong>{{perfil.NoCargos}}</strong> Experiencias laborales
                             </td>
                             <td>
-                                <strong>22</strong> Contactos
+                                <strong>{{perfil.cargos|length}}</strong> Contactos
                             </td>
 
                         </tr>
@@ -187,7 +187,7 @@
 
                     <div class="ibox "> <!-- PUBLICACIONES-->
                         <div class="ibox-title">
-                            <h5>Publicaciones</h5>
+                            <h5>Educacion</h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -197,30 +197,24 @@
                         <div class="ibox-content">
 
                             <table class="table">
+                            {%for escuela in perfil.escuelas:%}
                             <thead>
                             <tr>
-                                <th>Titulo</th>
-                                <th>Editorial</th>
-                                <th>Fecha</th>
-
+                                <th>{{escuela.name}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>titulo1</td>
-                                <td>editorial1</td>
-                                <td>fecha1</td>
-                            </tr>
-                            <tr>
-                                <td>titulo2</td>
-                                <td>editorial2</td>
-                                <td>fecha2</td>
+                                <td>{{escuela.titulacion}}</td>
+                                <td>{{escuela.disciplina}}</td>
+                                <td>{{escuela.fecha}}</td>
                             </tr>
                             <tr>
                                 <td>titulo3</td>
                                 <td>editorial2</td>
                                 <td>fecha3</td>
                             </tr>
+                            {%endfor%}
                             </tbody>
                         </table>
                         </div>
@@ -309,67 +303,23 @@
                 </div>
                 <div class="col-lg-4 m-b-lg">
                     <div id="vertical-timeline" class="vertical-container light-timeline no-margins">
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-briefcase"></i>
+
+                        {%
+                        for cargo in perfil.cargos:%}
+                            <div class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon navy-bg">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+
+                                <div class="vertical-timeline-content">
+                                    <h2>{{cargo.name}}</h2>
+                                    <p>{{cargo.empresa}}</p>
+                                    <span class="vertical-date">
+                                        <small>{{cargo.fecha}}</small>
+                                    </span>
+                                </div>
                             </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 1</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-briefcase"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 2</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon navy-bg">
-                                <i class="fa fa-briefcase"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 3</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="vertical-timeline-block">
-                            <div class="vertical-timeline-icon blue-bg">
-                                <i class="fa fa-mortar-board"></i>
-                            </div>
-
-                            <div class="vertical-timeline-content">
-                                <h2>Cargo 4</h2>
-                                <p>Empresa </p>
-                                <p>Ubicacion</p>
-                                <span class="vertical-date">
-                                    <small>Ene 2000 - Dic 2010 </small>
-                                </span>
-                            </div>
-                        </div>
-
-
+                        {%endfor%}
                     </div>
 
                 </div>
@@ -377,14 +327,7 @@
             </div>
 
         </div>
-            <div class="footer">
-                <div class="pull-right">
-                    10GB of <strong>250GB</strong> Free.
-                </div>
-                <div>
-                    <strong>Copyright</strong> Example Company &copy; 2014-2017
-                </div>
-            </div>
+
 
         </div>
         </div>
