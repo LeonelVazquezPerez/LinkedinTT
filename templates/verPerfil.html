@@ -108,10 +108,10 @@
                         <tbody>
                         <tr>
                             <td>
-                                <strong>142</strong> Publicaciones
+                                <strong>{{perfil.NoCargos}}</strong> Experiencias laborales
                             </td>
                             <td>
-                                <strong>22</strong> Contactos
+                                <strong>{{perfil.cargos|length}}</strong> Contactos
                             </td>
 
                         </tr>
@@ -187,7 +187,7 @@
 
                     <div class="ibox "> <!-- PUBLICACIONES-->
                         <div class="ibox-title">
-                            <h5>Publicaciones</h5>
+                            <h5>Educacion</h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -197,30 +197,24 @@
                         <div class="ibox-content">
 
                             <table class="table">
+                            {%for escuela in perfil.escuelas:%}
                             <thead>
                             <tr>
-                                <th>Titulo</th>
-                                <th>Editorial</th>
-                                <th>Fecha</th>
-
+                                <th>{{escuela.name}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>titulo1</td>
-                                <td>editorial1</td>
-                                <td>fecha1</td>
-                            </tr>
-                            <tr>
-                                <td>titulo2</td>
-                                <td>editorial2</td>
-                                <td>fecha2</td>
+                                <td>{{escuela.titulacion}}</td>
+                                <td>{{escuela.disciplina}}</td>
+                                <td>{{escuela.fecha}}</td>
                             </tr>
                             <tr>
                                 <td>titulo3</td>
                                 <td>editorial2</td>
                                 <td>fecha3</td>
                             </tr>
+                            {%endfor%}
                             </tbody>
                         </table>
                         </div>
@@ -320,9 +314,8 @@
                                 <div class="vertical-timeline-content">
                                     <h2>{{cargo.name}}</h2>
                                     <p>{{cargo.empresa}}</p>
-                                    <p>Ubicacion</p>
                                     <span class="vertical-date">
-                                        <small>Ene 2000 - Dic 2010 </small>
+                                        <small>{{cargo.fecha}}</small>
                                     </span>
                                 </div>
                             </div>
@@ -334,14 +327,7 @@
             </div>
 
         </div>
-            <div class="footer">
-                <div class="pull-right">
-                    10GB of <strong>250GB</strong> Free.
-                </div>
-                <div>
-                    <strong>Copyright</strong> Example Company &copy; 2014-2017
-                </div>
-            </div>
+
 
         </div>
         </div>
