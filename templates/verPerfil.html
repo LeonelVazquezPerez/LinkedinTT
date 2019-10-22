@@ -148,15 +148,12 @@
 
                     <div class="ibox">
                         <div class="ibox-content">
-                                <h3>Aptitudes de Alex Smith</h3>
+                                <h3>Aptitudes y validaciones</h3>
 
                             <ul class="list-unordered">
-                                <li>Aptitude 1 </li>
-                                <li>Aptitude 2 </li>
-                                <li>Aptitude 3 </li>
-                                <li>Aptitude 4 </li>
-                                <li>Aptitude 5 </li>
-                                <li>Aptitude 6 </li>
+                                {%for aptitude in perfil.aptitudes:%}
+                                <li>{{aptitude}} </li>
+                                {%endfor%}
 
                             </ul>
                         </div>
@@ -199,20 +196,15 @@
                             <table class="table">
                             {%for escuela in perfil.escuelas:%}
                             <thead>
-                            <tr>
-                                <th>{{escuela.name}}</th>
+                            <th>
+                                <th colspan="2">{{escuela.name}}</th>
+                                <th>{{escuela.fecha}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>{{escuela.titulacion}}</td>
                                 <td>{{escuela.disciplina}}</td>
-                                <td>{{escuela.fecha}}</td>
-                            </tr>
-                            <tr>
-                                <td>titulo3</td>
-                                <td>editorial2</td>
-                                <td>fecha3</td>
                             </tr>
                             {%endfor%}
                             </tbody>

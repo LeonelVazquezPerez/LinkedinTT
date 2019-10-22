@@ -95,30 +95,37 @@ def scrappyprofile(url):
     perfil.NoCargos = len(trabajos)
     #Obtenemos la educacion
     escuelas = selec.xpath('//*[starts-with(@class, "pv-entity__school-name t-16 t-black t-bold")]/text()').extract()
-
+    print("escuelas: "+ str(escuelas))
     if len(escuelas) > 0:
 
         titulos = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title pv-entity__degree-name t-14 t-black t-normal")]/span/text()').extract()
         disciplinas = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title pv-entity__fos t-14 t-black t-normal")]/span/text()').extract()
         fechas = selec.xpath('//*[starts-with(@class, "pv-entity__dates t-14 t-black--light t-normal")]/span/time/text()').extract()
-
-
-    educacion = []
-    for i in range(len(escuelas)):
-        titulos.pop(0)
-        disciplinas.pop(0)
-        escuela = Escuela(escuelas[i])
-        escuela.titulacion= titulos[i]
-        escuela.disciplina = disciplinas[i]
-        escuela.fecha = fechas[i] + " - "+fechas[i+1]
-        print("Escuelas: " + escuela.name)
-        print("Titulos: " + escuela.titulacion)
-        print("Disciplinas: " + escuela.disciplina)
-        #print("fechas: " + str(fechas))
-        educacion.append(escuela)
+        educacion = []
+        for i in range(len(escuelas)):
+            escuela = Escuela(escuelas[i])
+            if len(titulos) > 0:
+                titulos.pop(0)
+                escuela.titulacion = titulos[i]
+            if len(disciplinas) > 0:
+                disciplinas.pop(0)
+                escuela.disciplina = disciplinas[i]
+            escuela.fecha = fechas[i] + " - "+fechas[i+1]
+            print("Escuelas: " + escuela.name)
+            print("Titulos: " + escuela.titulacion)
+            print("Disciplinas: " + escuela.disciplina)
+            #print("fechas: " + str(fechas))
+            educacion.append(escuela)
 
     perfil.escuelas = educacion
-    driver.close()
+    #obteniendo las aptitudes
+    aptitudes= selec.xpath('//*[starts-with(@class, "pv-skill-category-entity__name-text t-16 t-black t-bold")]/text()').extract()
+    print("aptitudes: " + str(aptitudes))
+    perfil.aptitudes = aptitudes
+    #Obteniendo los intereses
+    intereses = selec.xpath('//*[starts-with(@class, "pv-entity__summary-info ember-view")]/h3/span/text()').extract()
+    print("Intereses: " + str(intereses))
+    #driver.close()
 
     return perfil
 
