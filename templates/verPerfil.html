@@ -132,7 +132,7 @@
             <div class="row">
 
                 <div class="col-lg-3">
-                    <div class="ibox"> <!--CERTIFICACIONES -->
+                    <!--<div class="ibox"> <!--CERTIFICACIONES
                         <div class="ibox-content">
                             <h3>Certificaciones</h3>
                             <ul class="list-unstyled file-list">
@@ -144,7 +144,7 @@
                                 <li><a href=""><i class="fa fa-file"></i> 10_08_2015.docx</a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div>-->
 
                     <div class="ibox">
                         <div class="ibox-content">
@@ -153,6 +153,18 @@
                             <ul class="list-unordered">
                                 {%for aptitude in perfil.aptitudes:%}
                                 <li>{{aptitude}} </li>
+                                {%endfor%}
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-content">
+                                <h3>Intereses</h3>
+
+                            <ul class="list-unordered">
+                                {%for interes in perfil.intereses:%}
+                                <li>{{interes}} </li>
                                 {%endfor%}
 
                             </ul>

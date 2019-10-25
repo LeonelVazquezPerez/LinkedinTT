@@ -8,19 +8,21 @@ from GestorSelenium import StartSelenium
 from Usuario import Usuario
 from Cargo import Cargo
 from Escuela import Escuela
+from extractContacts import extractContacts
+import connector
 def scrappyprofile(url):
 
     driver = StartSelenium()
     driver.get(url)
 
-    time.sleep(3)
+    time.sleep(6)
 
     last_height = driver.execute_script("return document.body.scrollHeight")
 
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-        time.sleep(3)
+        time.sleep(6)
 
         new_height = driver.execute_script("return document.body.scrollHeight")
         if new_height == last_height:
@@ -125,7 +127,12 @@ def scrappyprofile(url):
     #Obteniendo los intereses
     intereses = selec.xpath('//*[starts-with(@class, "pv-entity__summary-info ember-view")]/h3/span/text()').extract()
     print("Intereses: " + str(intereses))
-    #driver.close()
+    perfil.intereses = intereses
+    contactos = extractContacts(driver)
+
+    print("CONTACTOS: " + str(contactos))
+    connector.insertarUsuario(perfil)
+    driver.close()
 
     return perfil
 

@@ -1,15 +1,52 @@
-#1.-pip install mysql-connector-python
-#2.-sudo mysql -u root
-#3.-USE mysql;
-#4.-SELECT User, Host, plugin FROM mysql.user;
-#5.-UPDATE user SET plugin='mysql_native_password' WHERE User='root';
-#6.-FLUSH PRIVILEGES;
-#7.-exit;
-#8.-service mysql restart
-#9.-sudo mysql -u root
+import pymysql
+def consultarUsuarios():
+    try:
+        conexion = pymysql.connect(host='localhost', user='root', password='', db='tt')
+        try:
+            with conexion.cursor() as cursor:
+                #consulta = "INSERT INTO peliculas(titulo, anio) VALUES (%s, %s);"
+                #Podemos llamar muchas veces a .execute con datos distintos
+                #cursor.execute(consulta, ("Volver al futuro 1", 1985))
+                consulta = "SELECT * FROM usuario;"
+                cursor.execute(consulta)
+                for perfil in cursor.fetchall():
+                    print(perfil)
+                conexion.commit()
+        finally:
+            conexion.close()
+    except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+        print("Ocurrió un error al conectar: ", e)
 
-import mysql.connector
+def insertarUsuario(usuario):
+    try:
+        conexion = pymysql.connect(host='localhost', user='root', password='', db='tt')
+        try:
+            with conexion.cursor() as cursor:
+                #consulta = "INSERT INTO peliculas(titulo, anio) VALUES (%s, %s);"
+                #Podemos llamar muchas veces a .execute con datos distintos
+                #cursor.execute(consulta, ("Volver al futuro 1", 1985))
+                consulta = "INSERT INTO usuario(nombre,titular,extracto,url) VALUES (%s,%s,%s,%s);"
+                cursor.execute(consulta, (usuario.name, usuario.company, usuario.extracto, usuario.url))
+                conexion.commit()
+                consultarUsuarios()
+        finally:
+            conexion.close()
+    except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+        print("Ocurrió un error al conectar: ", e)
 
-linkedinDB = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='linkedin', port=3306)
-
-print(linkedinDB)
+# ALTER TABLE `members` CHANGE COLUMN` full_names` `fullname` char (250) NOT NULL;
+#alter table personal drop pasatiempo;
+def insertarCargos(usuario):
+    try:
+        conexion = pymysql.connect(host='localhost', user='root', password='', db='tt')
+        try:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO cargos(nombre,empresa,ubicacion,fecha) VALUES (%s,%s,%s,%s)"
+                cursor.execute(consulta, (usuario.name, usuario.company, usuario.extracto, usuario.url))
+                conexion.commit()
+                consultarUsuarios()
+        finally:
+            conexion.close()
+    except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+        print("Ocurrió un error al conectar: ", e)
+consultarUsuarios()

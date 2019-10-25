@@ -10,6 +10,8 @@ class Usuario:
     residencia = []
     empresas = []
     NoCargos = 0
+    intereses = []
+    extracto = ""
     def __init__(self, name, company, url, imagen):
         self.name = name
         self.company = company
