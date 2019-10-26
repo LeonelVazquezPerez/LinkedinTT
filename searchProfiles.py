@@ -45,6 +45,19 @@ def searchprofiles(termtofind):
 
     time.sleep(6)
 
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        time.sleep(6)
+
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+
+        last_height = new_height
+
     #GET PHOTOS
     images = driver.find_elements_by_xpath('//div[@class="presence-entity presence-entity--size-4 ember-view"]/img')
     # GET NAMES
