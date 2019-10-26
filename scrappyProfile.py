@@ -136,7 +136,7 @@ def scrappyprofile(url):
         print((str(user.url)))
 
     connector.insertarUsuario(perfil)
-    #driver.close()
+    driver.close()
 
     return perfil
 
