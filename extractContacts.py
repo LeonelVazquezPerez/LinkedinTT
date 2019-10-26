@@ -29,8 +29,7 @@ def extractContacts(driver):
         names = driver.find_elements_by_css_selector('.name.actor-name')
 
         # GET COMPANIES
-        companies = driver.find_elements_by_css_selector(
-            '.subline-level-1.t-14.t-black.t-normal.search-result__truncate')
+        companies = driver.find_elements_by_css_selector('.subline-level-1.t-14.t-black.t-normal.search-result__truncate')
 
         # GET LINKEDIN PROFILES
         urls = driver.find_elements_by_css_selector('.search-result__result-link.ember-view')
@@ -38,7 +37,8 @@ def extractContacts(driver):
         urlslist = []
 
         for url in urls:
-            urlslist.append(url.get_attribute("href"))
+            if url.get_attribute("href")[25:27] == "in":
+                urlslist.append(url.get_attribute("href"))
 
         urlslist = list(dict.fromkeys(urlslist))
 

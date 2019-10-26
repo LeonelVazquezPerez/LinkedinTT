@@ -54,6 +54,10 @@ def searchprofiles(termtofind):
 
     #GET PHOTOS
     images = driver.find_elements_by_xpath('//div[@class="presence-entity presence-entity--size-4 ember-view"]/img')
+
+    for im in images:
+        print(im.get_attribute("alt"))
+
     # GET NAMES
     names = driver.find_elements_by_css_selector('.name.actor-name')
 
@@ -66,13 +70,15 @@ def searchprofiles(termtofind):
     urlslist = []
 
     for url in urls:
-        urlslist.append(url.get_attribute("href"))
+        if url.get_attribute("href")[25:27] == "in":
+            urlslist.append(url.get_attribute("href"))
 
     urlslist = list(dict.fromkeys(urlslist))
 
     users = []
 
     i = 0
+    j = 0
     while i < len(names):
         name = names[i].text
         imagen = "default.jpg"
@@ -84,11 +90,14 @@ def searchprofiles(termtofind):
 
         if i < len(urlslist):
             url = urlslist[i]
-            if i < len(images):
-                src = images[i].get_attribute('src')
-                if src is not None:
-                    imagen = unquote(urlslist[i][28:-1]) + ".jpg"
-                    urllib.request.urlretrieve(src, "static/img/" + imagen)
+
+            if j < len(images):
+                if images[j].get_attribute('alt') == name:
+                    src = images[j].get_attribute('src')
+                    if src is not None:
+                        imagen = unquote(urlslist[i][28:-1]) + ".jpg"
+                        urllib.request.urlretrieve(src, "static/img/" + imagen)
+                        j += 1
         else:
             url = ""
 
