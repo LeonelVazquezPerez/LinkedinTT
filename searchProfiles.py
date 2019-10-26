@@ -39,11 +39,11 @@ def searchprofiles(termtofind):
     password.send_keys(passwordStr)
     driver.find_element_by_css_selector('.btn__primary--large.from__button--floating').click()
     print("Searching")
-    time.sleep(3)
+    time.sleep(6)
 
     driver.find_element_by_css_selector('.search-global-typeahead__input').send_keys(termtofind, Keys.ENTER)
 
-    time.sleep(3)
+    time.sleep(6)
 
     #GET PHOTOS
     images = driver.find_elements_by_xpath('//div[@class="presence-entity presence-entity--size-4 ember-view"]/img')

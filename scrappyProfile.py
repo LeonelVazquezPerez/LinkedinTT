@@ -130,9 +130,16 @@ def scrappyprofile(url):
     perfil.intereses = intereses
     contactos = extractContacts(driver)
 
-    print("CONTACTOS: " + str(contactos))
+    i = 0
+    for user in contactos:
+        i += 1;
+        print("**CONTACTO " + str(i))
+        print(str(user.name))
+        print(str(user.company))
+        print((str(user.url)))
+
     connector.insertarUsuario(perfil)
-    driver.close()
+    #driver.close()
 
     return perfil
 
