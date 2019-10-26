@@ -15,20 +15,14 @@ def scrappyprofile(url):
     driver = StartSelenium()
     driver.get(url)
 
-    time.sleep(6)
+    time.sleep(2)
 
-    last_height = driver.execute_script("return document.body.scrollHeight")
+    scheight = .1
+    while scheight < 9.9:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight/%s);" % scheight)
+        scheight += .01
 
-    while True:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-        time.sleep(6)
-
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-
-        last_height = new_height
+    time.sleep(1)
 
     pagina = driver.page_source
     page = open("source.txt", "w")
