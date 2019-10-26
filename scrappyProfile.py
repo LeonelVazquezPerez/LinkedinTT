@@ -67,9 +67,6 @@ def scrappyprofile(url):
     print("title: " + title[0])
     print("address: " + address[0])
     print("contacts: " + str(contacts))
-    print("total: " + str(cargos))
-
-
 
     if b == 1:
         imagen = url[28:-1] + ".jpg"
@@ -86,8 +83,6 @@ def scrappyprofile(url):
             fechas.append("")
             fechas.append("")
 
-    print("empresas: " + str(empresas))
-    print("fechas: " + str(fechas))
     for i in range(len(cargos)):
         fechas.pop(0)
         trabajo = Cargo(cargos[i], empresas[i], "", fechas[i])
@@ -95,6 +90,8 @@ def scrappyprofile(url):
         print("insertado: "+trabajo.fecha)
     perfil.cargos = trabajos
     perfil.NoCargos = len(trabajos)
+
+    print("Cargos: "+ str(len(perfil.cargos)))
     #Obtenemos la educacion
     escuelas = selec.xpath('//*[starts-with(@class, "pv-entity__school-name t-16 t-black t-bold")]/text()').extract()
     print("escuelas: "+ str(escuelas))
