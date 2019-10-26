@@ -43,20 +43,14 @@ def searchprofiles(termtofind):
 
     driver.find_element_by_css_selector('.search-global-typeahead__input').send_keys(termtofind, Keys.ENTER)
 
-    time.sleep(6)
+    time.sleep(5)
 
-    last_height = driver.execute_script("return document.body.scrollHeight")
+    scheight = .1
+    while scheight < 9.9:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight/%s);" % scheight)
+        scheight += .01
 
-    while True:
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-        time.sleep(6)
-
-        new_height = driver.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-
-        last_height = new_height
+    time.sleep(1)
 
     #GET PHOTOS
     images = driver.find_elements_by_xpath('//div[@class="presence-entity presence-entity--size-4 ember-view"]/img')
