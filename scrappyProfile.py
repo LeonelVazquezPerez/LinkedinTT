@@ -40,6 +40,7 @@ def scrappyprofile(url):
     title = selec.xpath('//*[starts-with(@class, "mt1 t-18 t-black t-normal")]/text()').extract()
     address = selec.xpath('//*[starts-with(@class, "t-16 t-black t-normal inline-block")]/text()').extract()
     contacts = selec.xpath('//*[starts-with(@class, "ember-view")]/text()').extract()
+    extracto = selec.xpath('//*[starts-with(@class, "pv-about__summary-text mt4 t-14 ember-view")]/span/text()').extract()
     # Obtenemos los cargos
     cargos = []
     css1cargo = selec.xpath(
@@ -57,17 +58,19 @@ def scrappyprofile(url):
     empresas = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title t-14 t-black t-normal")]/text()').extract()
     # Obtenemos las fechas por empresa
     fechas = selec.xpath('//*[starts-with(@class, "pv-entity__date-range t-14 t-black--light t-normal")]/span/text()').extract()
+
     print("name: " + name[0])
     print("title: " + title[0])
     print("address: " + address[0])
     print("contacts: " + str(contacts))
-
+    print("extracto: " + str(extracto))
     if b == 1:
         imagen = url[28:-1] + ".jpg"
     else:
         imagen = "default.jpg"
 
     perfil = Usuario(name[0], title[0], url, imagen)
+    perfil.extracto = extracto[0]
     trabajos = []
     if len(cargos) != len(empresas):
         for i in range( len(cargos) - len(empresas) ):
@@ -95,8 +98,14 @@ def scrappyprofile(url):
         disciplinas = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title pv-entity__fos t-14 t-black t-normal")]/span/text()').extract()
         fechas = selec.xpath('//*[starts-with(@class, "pv-entity__dates t-14 t-black--light t-normal")]/span/time/text()').extract()
         educacion = []
+
+        for long in range(len(escuelas) - len(disciplinas)):
+            disciplinas.append("")
+            disciplinas.append("")
+        print("longitudes: " + str(len(escuelas)) + " : " + str(len(titulos)) + ":" + str(len(disciplinas)))
         for i in range(len(escuelas)):
             escuela = Escuela(escuelas[i])
+
             if len(titulos) > 0:
                 titulos.pop(0)
                 escuela.titulacion = titulos[i]
@@ -109,8 +118,7 @@ def scrappyprofile(url):
             print("Disciplinas: " + escuela.disciplina)
             #print("fechas: " + str(fechas))
             educacion.append(escuela)
-
-    perfil.escuelas = educacion
+        perfil.escuelas = educacion
     #obteniendo las aptitudes
     aptitudes= selec.xpath('//*[starts-with(@class, "pv-skill-category-entity__name-text t-16 t-black t-bold")]/text()').extract()
     print("aptitudes: " + str(aptitudes))
@@ -121,16 +129,17 @@ def scrappyprofile(url):
     perfil.intereses = intereses
     contactos = extractContacts(driver)
 
+    perfil.contactos = contactos
     i = 0
     for user in contactos:
         i += 1;
         print("**CONTACTO " + str(i))
         print(str(user.name))
-        print(str(user.company))
-        print((str(user.url)))
+        print(str(user.imagen))
+
 
     connector.insertarUsuario(perfil)
-    driver.close()
+    #driver.close()
 
     return perfil
 

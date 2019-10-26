@@ -97,6 +97,9 @@
                                 </h2>
                                 <h4>{{perfil.company}}</h4>
                                 <small>
+                                    {{perfil.extracto}}
+                                </small><br>
+                                <small>
                                     {{perfil.url}}
                                 </small>
                             </div>
@@ -111,7 +114,7 @@
                                 <strong>{{perfil.NoCargos}}</strong> Experiencias laborales
                             </td>
                             <td>
-                                <strong>{{perfil.cargos|length}}</strong> Contactos
+                                <strong>{{perfil.contactos|length}}</strong> Contactos
                             </td>
 
                         </tr>
@@ -176,16 +179,9 @@
                             <h3>Contactos</h3>
 
                             <div class="user-friends">
-                                <a href=""><img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a6.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a7.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a8.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                <a href=""><img alt="image" class="img-circle" src="img/a1.jpg"></a>
+                                {%for contacto in perfil.contactos:%}
+                                <a href="{{contacto.url}}"><img alt="image" class="img-circle" src="/static/img/{{contacto.imagen}}"></a>
+                                {%endfor%}
                             </div>
                         </div>
                     </div>
