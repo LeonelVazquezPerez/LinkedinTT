@@ -10,9 +10,17 @@ def extractContacts(driver):
     users = []
 
     try:
-        driver.find_element_by_partial_link_text('contactos').click()
+        #driver.find_element_by_partial_link_text('contactos').click()
+        driver.find_element_by_css_selector('.t-16.t-bold').click()
 
-        time.sleep(3)
+        time.sleep(2)
+
+        scheight = .1
+        while scheight < 9.9:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight/%s);" % scheight)
+            scheight += .01
+
+        time.sleep(1)
 
         # GET PHOTOS
         images = driver.find_elements_by_xpath('//div[@class="presence-entity presence-entity--size-4 ember-view"]/img')
