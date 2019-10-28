@@ -70,7 +70,8 @@ def scrappyprofile(url):
         imagen = "default.jpg"
 
     perfil = Usuario(name[0], title[0], url, imagen)
-    perfil.extracto = extracto[0]
+    if len(extracto) > 0:
+        perfil.extracto = extracto[0]
     trabajos = []
     if len(cargos) != len(empresas):
         for i in range( len(cargos) - len(empresas) ):
@@ -137,7 +138,9 @@ def scrappyprofile(url):
         print(str(user.name))
         print(str(user.imagen))
 
-
+    #Obteniendo licencias y certificaciones
+    certificaciones = selec.xpath('//*[starts-with(@class, "pv-certifications__summary-info pv-entity__summary-info pv-entity__summary-info--background-section pv-certifications__summary-info--has-extra-details")]/h3/text()').extract()
+    print("Certificaciones: " + str(certificaciones))
     connector.insertarUsuario(perfil)
     #driver.close()
 
