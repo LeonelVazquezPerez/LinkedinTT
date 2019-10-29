@@ -141,6 +141,28 @@ def scrappyprofile(url):
     #Obteniendo licencias y certificaciones
     certificaciones = selec.xpath('//*[starts-with(@class, "pv-certifications__summary-info pv-entity__summary-info pv-entity__summary-info--background-section pv-certifications__summary-info--has-extra-details")]/h3/text()').extract()
     print("Certificaciones: " + str(certificaciones))
+    perfil.certificaciones = certificaciones
+    #Obteniendo logros
+    logrosTitles = selec.xpath('//*[starts-with(@class, "pv-accomplishments-block__count t-32 t-black t-normal pr3")]/span/text()').extract()
+    logros = selec.xpath('//*[starts-with(@class, "pv-accomplishments-block__list-container")]/ul/li/text()').extract()
+    print("Logros T: " + str(logrosTitles))
+    print("logros: "+ str(logros))
+    conjuntoLogros=[]
+    i = 1
+    while i < len(logrosTitles):
+        aux = ""
+        for j in range(int(logrosTitles[i])):
+            if j == 0:
+                aux = logros.pop(0)
+            else:
+                aux = aux + ", " + logros.pop(0)
+
+        conjuntoLogros.append(aux)
+        i += 2
+
+    print("conjuntoLogros: " + str(conjuntoLogros))
+    perfil.logrosTitles = logrosTitles[0::2]
+    perfil.logros = conjuntoLogros
     connector.insertarUsuario(perfil)
     #driver.close()
 

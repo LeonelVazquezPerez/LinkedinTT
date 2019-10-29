@@ -86,3 +86,5 @@ def putRelUsuarioCargo(conexion,idusu,idcargo):
     finally:
         print("Relaciones Insertadas")
 
+
+

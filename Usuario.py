@@ -1,7 +1,7 @@
 class Usuario:
     aptitudes = []
     cargos = []
-    certificacion = []
+    certificaciones = []
     contactos = []
     cursos = []
     escuelas = []
@@ -12,6 +12,8 @@ class Usuario:
     NoCargos = 0
     intereses = []
     extracto = ""
+    logros = []
+    logrosTitles = []
     def __init__(self, name, company, url, imagen):
         self.name = name
         self.company = company
