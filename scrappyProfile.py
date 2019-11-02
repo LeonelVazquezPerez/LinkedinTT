@@ -1,7 +1,4 @@
 #IMPORT LIBRARIES FROM SELENIUM
-import requests
-from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
 import time
 from parsel import Selector
 from GestorSelenium import StartSelenium
@@ -10,9 +7,10 @@ from Cargo import Cargo
 from Escuela import Escuela
 from extractContacts import extractContacts
 import connector
-def scrappyprofile(url):
 
-    driver = StartSelenium()
+def scrappyprofile(url,user):
+
+    driver = StartSelenium(user)
     driver.get(url)
 
     time.sleep(2)
@@ -131,8 +129,8 @@ def scrappyprofile(url):
 
     perfil.contactos = contactos
     i = 0
-    for user in contactos:
-        i += 1;
+    for user in perfil.contactos:
+        i += 1
         print("**CONTACTO " + str(i))
         print(str(user.name))
         print(str(user.imagen))

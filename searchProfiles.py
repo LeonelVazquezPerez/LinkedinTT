@@ -4,25 +4,11 @@ from selenium import webdriver
 import time
 import urllib.request
 from urllib.parse import unquote
-from parsel import Selector
-
 from Usuario import Usuario
+from Account import Account
 
 
-def searchprofiles(termtofind):
-    # READ ACCOUNTS ON FILE
-    file = open("accounts.txt", "r")
-    line = file.readline()
-    account = line.split(" // ")
-    file.close()
-
-    # EXTRACT USER AND PASSWORD OF ONE ACCOUNT
-    usernameStr = account[0]
-    passwordStr = account[1]
-
-    # SHOW ACCOUNT
-    print("Account selected: " + usernameStr)
-
+def searchprofiles(termtofind,user):
     # OPEN NEW WINDOW ON FIREFOX
     print("Initializing components")
     driver = webdriver.Firefox()
@@ -34,9 +20,9 @@ def searchprofiles(termtofind):
     # INSERT LOGGING DATA ON LINKEDIN
     print("Logging in")
     username = driver.find_element_by_id('username')
-    username.send_keys(usernameStr)
+    username.send_keys(user.username)
     password = driver.find_element_by_id('password')
-    password.send_keys(passwordStr)
+    password.send_keys(user.password)
     driver.find_element_by_css_selector('.btn__primary--large.from__button--floating').click()
     print("Searching")
     time.sleep(6)

@@ -39,4 +39,4 @@ class accountController:
 
     def closeAccount(self, account):
         self.accounts.remove(account)
-        print("Account removed: " + account.username)
+        print("Closed account: " + account.username)

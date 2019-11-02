@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 from searchProfiles import searchprofiles
-from GestorSelenium import StartSelenium
 from scrappyProfile import scrappyprofile
 from connector import borrarperfilbyurl
+from accountController import accountController
+
 @app.route('/')
 def index():
 
@@ -15,13 +16,15 @@ def resultados():
     if request.method== "POST":
         cadena = request.form["cadena"]
         print("valor obtenido:"+cadena)
-        resultado = searchprofiles(cadena)
+        userR = controller.selectAccount()
+        resultado = searchprofiles(cadena, userR)
         for res in resultado:
             print(res.url[28:-1] + ".jpg")
         paquete = []
         paquete.append(cadena)
         paquete.append(len(resultado))
         paquete.append(resultado)
+        controller.closeAccount(userR)
 
         return render_template("resultados.html", paquete=paquete)
     return render_template('resultados.html')
@@ -32,7 +35,9 @@ def verperfil():
     if request.method == "GET":
         url = request.args.get("url","")
         print("URL solicitada: "+url)
-        perfil = scrappyprofile(url)
+        userV = controller.selectAccount()
+        perfil = scrappyprofile(url, userV)
+        controller.closeAccount(userV)
         return render_template("verPerfil.html", perfil=perfil)
     return render_template('index.html')
 
@@ -48,5 +53,6 @@ def actualizarperfil():
 
 global driver
 if __name__ == "__main__":
-    app.run(debug=True)
+    controller = accountController()
+    app.run(host='0.0.0.0', debug=True)
 
