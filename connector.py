@@ -32,6 +32,7 @@ def insertarUsuario(usuario):
 
                 if flag:
                     print("EL usuario no existe, lo insertamos")
+                    #Se inserta en la tabla usuario
                     consulta = "INSERT INTO usuario(nombre,titular,extracto,url) VALUES (%s,%s,%s,%s);"
                     cursor.execute(consulta, (usuario.name, usuario.company, usuario.extracto, usuario.url))
                     conexion.commit()
@@ -40,8 +41,11 @@ def insertarUsuario(usuario):
                     cursor.execute(consulta)
                     indiceUsuario = cursor.fetchone()
                     print("Ultimo indice:" + str(indiceUsuario[0]))
-                    print("Cargos: " + str(len(usuario.cargos)))
+
+                    #Se insertan los cargos
                     insertarCargos(conexion, usuario.cargos, indiceUsuario)
+                    #Se insertan las escuelas
+                    insertarEscuelas(conexion,usuario.escuelas,indiceUsuario)
 
                 else:
                     print("EL usuario ya existe")
@@ -53,9 +57,6 @@ def insertarUsuario(usuario):
             conexion.close()
     except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
         print("Ocurrió un error al conectar: ", e)
-
-# ALTER TABLE `members` CHANGE COLUMN` full_names` `fullname` char (250) NOT NULL;
-#alter table personal drop pasatiempo;
 
 
 def insertarCargos(conexion, cargos, indiceUsuario):
@@ -86,5 +87,60 @@ def putRelUsuarioCargo(conexion,idusu,idcargo):
     finally:
         print("Relaciones Insertadas")
 
+def insertarEscuelas(conexion,escuelas,indiceUsuario):
+    try:
+        for escuela in escuelas:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO escuela(nombre,titulacion,disciplinaAcademica,fecha) VALUES (%s,%s,%s,%s)"
+                cursor.execute(consulta, (escuela.name, escuela.titulacion, escuela.disciplina, escuela.fecha ))
+                conexion.commit()
+                print("escuela insertada")
+                consulta = "select * from escuela order by idEscuela desc limit 1;"
+                cursor.execute(consulta)
+                indiceCargo = cursor.fetchone()
+                putRelUsuarioEscuela(conexion, str(indiceUsuario[0]), str(indiceCargo[0]))
 
+    finally:
+        print("cargos insertados")
+
+
+def putRelUsuarioEscuela(conexion, idusu,idescuela):
+    try:
+        with conexion.cursor() as cursor:
+            consulta = "INSERT INTO usuario_has_escuela(usuario_idUsuario,escuela_idEscuela) VALUES (%s,%s)"
+            cursor.execute(consulta, (idusu, idescuela))
+            conexion.commit()
+            return "Relacion insertada"
+    finally:
+        print("Relaciones Insertadas")
+
+
+def borrarperfilbyurl(url):
+    try:
+        conexion = pymysql.connect(host='localhost', user='root', password='', db='tt')
+        try:
+            with conexion.cursor() as cursor:
+                consulta = "SELECT idUsuario FROM usuario WHERE url = '"+url+"';"
+                cursor.execute(consulta)
+                idUsuario = cursor.fetchone()[0] #es entero el id
+                print("idUsuario obtenido: " + str(idUsuario))
+                #Eliminamos los cargos
+                consulta = "SELECT cargos_idCargo FROM usuario_has_cargos WHERE usuario_idUsuario = " + str(idUsuario) +";"
+                cursor.execute(consulta)
+                for idcargo in cursor.fetchall():
+                    print("idCargo: " + str(idcargo[0]))
+                    consulta = "DELETE FROM usuario_has_cargos WHERE cargos_idCargo =" + str(idcargo[0]) + ";"
+                    cursor.execute(consulta)
+                    consulta = "DELETE FROM cargos WHERE idCargo =" + str(idcargo[0]) + ";"
+                    cursor.execute(consulta)
+
+                #Eliminamos el usuario
+                consulta = "DELETE FROM usuario WHERE url = '" + url + "';"
+                cursor.execute(consulta)
+                conexion.commit()
+                print("EL USUARIO SE HA ELIMINADO")
+        finally:
+            conexion.close()
+    except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
+        print("Ocurrió un error al conectar: ", e)
 

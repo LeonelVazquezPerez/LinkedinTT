@@ -38,7 +38,10 @@
                         <a href="/"><i class="fa fa-search"></i> <span class="nav-label">Buscador </span></a>
                     </li>
                     <li class="special_link">
-                        <a href="Resultados.html"><i class="fa fa-th-list"></i> <span class="nav-label">Resultados </span></a>
+                        <a href="/Resultados/"><i class="fa fa-th-list"></i> <span class="nav-label">Resultados </span></a>
+                    </li>
+                    <li>
+                        <a href="/verperfil/?url={{perfil.url}}"><i class="fa fa-th-reload"></i> <span class="nav-label">Actualizar Perfil </span></a>
                     </li>
                 </ul>
 
@@ -46,6 +49,7 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg">
+        <div id="loaderTT" class="progress progress-striped active m-b-sm" style="display:none;"><div style="width: 100%;" class="progress-bar"></div></div>
         <div class="row border-bottom">
         <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -65,18 +69,18 @@
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-9">
                     <div class="search-form">
-                                <form action="/resultados/" method="POST">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Criterio de busqueda" id="cadena" name="cadena" class="form-control input-lg">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-lg btn-primary" type="submit">
-                                                Buscar
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </form>
+                        <form action="/resultados/" method="POST">
+                            <div class="input-group">
+                                <input type="text" placeholder="Criterio de busqueda" id="cadena" name="cadena" class="form-control input-lg">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-lg btn-primary" type="submit" onclick="javascript:void(document.getElementById('loaderTT').style.display='block');">
+                                        Buscar
+                                    </button>
+                                </div>
                             </div>
+
+                        </form>
+                    </div>
 
                 </div>
             </div>
@@ -111,7 +115,7 @@
                         <tbody>
                         <tr>
                             <td>
-                                <strong>{{perfil.NoCargos}}</strong> Experiencias laborales
+                                <strong>{{perfil.cargos|length}}</strong> Experiencias laborales
                             </td>
                             <td>
                                 <strong>{{perfil.contactos|length}}</strong> Contactos
@@ -150,7 +154,7 @@
 
                     <div class="ibox">
                         <div class="ibox-content">
-                                <h3>Aptitudes y validaciones</h3>
+                                <h3>Aptitudes</h3>
 
                             <ul class="list-unordered">
                                 {%for aptitude in perfil.aptitudes:%}
@@ -189,7 +193,7 @@
 
                 <div class="col-lg-5">
 
-                    <div class="ibox "> <!-- PUBLICACIONES-->
+                    <div class="ibox "> <!-- Educacion-->
                         <div class="ibox-title">
                             <h5>Educacion</h5>
                             <div class="ibox-tools">
@@ -219,7 +223,7 @@
                         </table>
                         </div>
                     </div>
-                    <div class="ibox "> <!-- CURSOS-->
+                    <div class="ibox "> <!-- LOGROS-->
                         <div class="ibox-title">
                             <h5>LOGROS</h5>
                             <div class="ibox-tools">
@@ -249,46 +253,7 @@
                         </table>
                         </div>
                     </div>
-                    <div class="ibox "> <!-- PATENTES-->
-                        <div class="ibox-title">
-                            <h5>Patentes</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="ibox-content">
 
-                            <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Titulo</th>
-                                <th>Editorial</th>
-                                <th>Fecha</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>titulo1</td>
-                                <td>editorial1</td>
-                                <td>fecha1</td>
-                            </tr>
-                            <tr>
-                                <td>titulo 1</td>
-                                <td>editorial2</td>
-                                <td>fecha2</td>
-                            </tr>
-                            <tr>
-                                <td>titulo3</td>
-                                <td>editorial 3</td>
-                                <td>fecha3</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
 
                 </div>
                 <div class="col-lg-4 m-b-lg">

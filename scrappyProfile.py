@@ -87,9 +87,8 @@ def scrappyprofile(url):
         trabajos.append(trabajo)
         print("insertado: "+trabajo.fecha)
     perfil.cargos = trabajos
-    perfil.NoCargos = len(trabajos)
-
     print("Cargos: "+ str(len(perfil.cargos)))
+
     #Obtenemos la educacion
     escuelas = selec.xpath('//*[starts-with(@class, "pv-entity__school-name t-16 t-black t-bold")]/text()').extract()
     print("escuelas: "+ str(escuelas))
@@ -164,7 +163,7 @@ def scrappyprofile(url):
     perfil.logrosTitles = logrosTitles[0::2]
     perfil.logros = conjuntoLogros
     connector.insertarUsuario(perfil)
-    #driver.close()
+    driver.close()
 
     return perfil
 

@@ -31,6 +31,7 @@
 </head>
 
 <body>
+
     <div id="wrapper">
         <nav class="navbar-default navbar-static-side" role="navigation">
 
@@ -58,6 +59,8 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div id="loaderTT" class="progress progress-striped active m-b-sm" style="display:none;"><div style="width: 100%;" class="progress-bar"></div></div>
+
         <div class="row border-bottom">
         <nav class="navbar navbar-static-top " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -87,7 +90,7 @@
                                     <div class="input-group">
                                         <input type="text" placeholder="Criterio de busqueda" id = "cadena" name="cadena" class="form-control input-lg">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-lg btn-primary" type="submit">
+                                            <button class="btn btn-lg btn-primary" type="submit" onclick="javascript:void(document.getElementById('loaderTT').style.display='block');">
                                                 Buscar
                                             </button>
                                         </div>
@@ -105,7 +108,7 @@
                                     <img src="/static/img/{{user.imagen}}" class="img-circle circle-border m-b-md" alt="{{user.name}}">
                                 </div>
 
-                                <h3><a href="verperfil/?url={{user.url}}">{{user.name}}</a></h3>
+                                <h3><a href="verperfil/?url={{user.url}}" onclick="javascript:void(document.getElementById('loaderTT').style.display='block');">{{user.name}}</a></h3>
                                 <p>{{user.company}}</p>
                                 <a href='#' class='search-link'>{{user.url}}</a>
 

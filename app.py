@@ -3,6 +3,7 @@ app = Flask(__name__)
 from searchProfiles import searchprofiles
 from GestorSelenium import StartSelenium
 from scrappyProfile import scrappyprofile
+from connector import borrarperfilbyurl
 @app.route('/')
 def index():
 
@@ -35,6 +36,15 @@ def verperfil():
         return render_template("verPerfil.html", perfil=perfil)
     return render_template('index.html')
 
+@app.route('/verperfil/', methods = ["GET","POST"])
+def actualizarperfil():
+    if request.method == "GET":
+        url = request.args.get("url","")
+        print("URL solicitada para actualizar: "+url)
+        borrarperfilbyurl(url)
+        perfil = scrappyprofile(url)
+        return render_template("verPerfil.html", perfil=perfil)
+    return render_template('index.html')
 
 global driver
 if __name__ == "__main__":
