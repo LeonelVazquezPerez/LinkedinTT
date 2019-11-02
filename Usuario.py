@@ -19,3 +19,14 @@ class Usuario:
         self.company = company
         self.url = url
         self.imagen = imagen
+
+class UsuarioContact:
+
+    father = ""
+    contacts = []
+
+    def __init__(self, name, company, url, imagen):
+        self.name = name
+        self.company = company
+        self.url = url
+        self.imagen = imagen

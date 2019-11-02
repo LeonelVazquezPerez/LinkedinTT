@@ -10,7 +10,6 @@ def index():
 
     return render_template('index.html')
 
-
 @app.route('/resultados/', methods = ["GET","POST"])
 def resultados():
     if request.method== "POST":
@@ -34,6 +33,7 @@ def resultados():
 def verperfil():
     if request.method == "GET":
         url = request.args.get("url", "")
+        urlG = url
         print("URL solicitada: "+url)
         userV = controller.selectAccount()
         perfil = scrappyprofile(url, userV)
@@ -45,6 +45,7 @@ def verperfil():
 def actualizarperfil():
     if request.method == "GET":
         url = request.args.get("url","")
+        urlG = url
         print("URL solicitada para actualizar: "+url)
         borrarperfilbyurl(url)
         userA = controller.selectAccount()
@@ -57,8 +58,8 @@ def actualizarperfil():
 @app.route('/vercontactos/', methods = ["GET","POST"])
 def vercontactos():
     if request.method == "GET":
-        url = request.args.get("url", "")
-        print("URL solicitada: " + url)
+        #url = request.args.get("url", "")
+        #print("URL solicitada: " + url)
 
         return render_template("verRedContactos.html")
     return render_template('verRedContactos.html')

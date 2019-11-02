@@ -57,11 +57,11 @@ def scrappyprofile(url,user):
     # Obtenemos las fechas por empresa
     fechas = selec.xpath('//*[starts-with(@class, "pv-entity__date-range t-14 t-black--light t-normal")]/span/text()').extract()
 
-    print("name: " + name[0])
-    print("title: " + title[0])
-    print("address: " + address[0])
-    print("contacts: " + str(contacts))
-    print("extracto: " + str(extracto))
+    #print("name: " + name[0])
+    #print("title: " + title[0])
+    #print("address: " + address[0])
+    #print("contacts: " + str(contacts))
+    #print("extracto: " + str(extracto))
     if b == 1:
         imagen = url[28:-1] + ".jpg"
     else:
@@ -83,13 +83,13 @@ def scrappyprofile(url,user):
         fechas.pop(0)
         trabajo = Cargo(cargos[i], empresas[i], "", fechas[i])
         trabajos.append(trabajo)
-        print("insertado: "+trabajo.fecha)
+        #print("insertado: "+trabajo.fecha)
     perfil.cargos = trabajos
-    print("Cargos: "+ str(len(perfil.cargos)))
+    #print("Cargos: "+ str(len(perfil.cargos)))
 
     #Obtenemos la educacion
     escuelas = selec.xpath('//*[starts-with(@class, "pv-entity__school-name t-16 t-black t-bold")]/text()').extract()
-    print("escuelas: "+ str(escuelas))
+    #print("escuelas: "+ str(escuelas))
     if len(escuelas) > 0:
 
         titulos = selec.xpath('//*[starts-with(@class, "pv-entity__secondary-title pv-entity__degree-name t-14 t-black t-normal")]/span/text()').extract()
@@ -100,7 +100,7 @@ def scrappyprofile(url,user):
         for long in range(len(escuelas) - len(disciplinas)):
             disciplinas.append("")
             disciplinas.append("")
-        print("longitudes: " + str(len(escuelas)) + " : " + str(len(titulos)) + ":" + str(len(disciplinas)))
+        #print("longitudes: " + str(len(escuelas)) + " : " + str(len(titulos)) + ":" + str(len(disciplinas)))
         for i in range(len(escuelas)):
             escuela = Escuela(escuelas[i])
 
@@ -111,39 +111,39 @@ def scrappyprofile(url,user):
                 disciplinas.pop(0)
                 escuela.disciplina = disciplinas[i]
             escuela.fecha = fechas[i] + " - "+fechas[i+1]
-            print("Escuelas: " + escuela.name)
-            print("Titulos: " + escuela.titulacion)
-            print("Disciplinas: " + escuela.disciplina)
+            #print("Escuelas: " + escuela.name)
+            #print("Titulos: " + escuela.titulacion)
+            #print("Disciplinas: " + escuela.disciplina)
             #print("fechas: " + str(fechas))
             educacion.append(escuela)
         perfil.escuelas = educacion
     #obteniendo las aptitudes
     aptitudes= selec.xpath('//*[starts-with(@class, "pv-skill-category-entity__name-text t-16 t-black t-bold")]/text()').extract()
-    print("aptitudes: " + str(aptitudes))
+    #print("aptitudes: " + str(aptitudes))
     perfil.aptitudes = aptitudes
     #Obteniendo los intereses
     intereses = selec.xpath('//*[starts-with(@class, "pv-entity__summary-info ember-view")]/h3/span/text()').extract()
-    print("Intereses: " + str(intereses))
+    #print("Intereses: " + str(intereses))
     perfil.intereses = intereses
-    contactos = extractContacts(driver)
+    contactos = extractContacts(driver,url)
 
     perfil.contactos = contactos
     i = 0
     for user in perfil.contactos:
         i += 1
-        print("**CONTACTO " + str(i))
-        print(str(user.name))
-        print(str(user.imagen))
+        #print("**CONTACTO " + str(i))
+        #print(str(user.name))
+        #print(str(user.imagen))
 
     #Obteniendo licencias y certificaciones
     certificaciones = selec.xpath('//*[starts-with(@class, "pv-certifications__summary-info pv-entity__summary-info pv-entity__summary-info--background-section pv-certifications__summary-info--has-extra-details")]/h3/text()').extract()
-    print("Certificaciones: " + str(certificaciones))
+    #print("Certificaciones: " + str(certificaciones))
     perfil.certificaciones = certificaciones
     #Obteniendo logros
     logrosTitles = selec.xpath('//*[starts-with(@class, "pv-accomplishments-block__count t-32 t-black t-normal pr3")]/span/text()').extract()
     logros = selec.xpath('//*[starts-with(@class, "pv-accomplishments-block__list-container")]/ul/li/text()').extract()
-    print("Logros T: " + str(logrosTitles))
-    print("logros: "+ str(logros))
+    #print("Logros T: " + str(logrosTitles))
+    #print("logros: "+ str(logros))
     conjuntoLogros=[]
     i = 1
     while i < len(logrosTitles):
@@ -157,7 +157,7 @@ def scrappyprofile(url,user):
         conjuntoLogros.append(aux)
         i += 2
 
-    print("conjuntoLogros: " + str(conjuntoLogros))
+    #print("conjuntoLogros: " + str(conjuntoLogros))
     perfil.logrosTitles = logrosTitles[0::2]
     perfil.logros = conjuntoLogros
     connector.insertarUsuario(perfil)
