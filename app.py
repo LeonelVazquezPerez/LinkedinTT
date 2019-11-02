@@ -33,7 +33,7 @@ def resultados():
 @app.route('/resultados/verperfil/', methods = ["GET","POST"])
 def verperfil():
     if request.method == "GET":
-        url = request.args.get("url","")
+        url = request.args.get("url", "")
         print("URL solicitada: "+url)
         userV = controller.selectAccount()
         perfil = scrappyprofile(url, userV)
@@ -47,12 +47,24 @@ def actualizarperfil():
         url = request.args.get("url","")
         print("URL solicitada para actualizar: "+url)
         borrarperfilbyurl(url)
-        perfil = scrappyprofile(url)
+        userA = controller.selectAccount()
+        perfil = scrappyprofile(url,userA)
+        controller.closeAccount(userA)
         return render_template("verPerfil.html", perfil=perfil)
     return render_template('index.html')
+
+
+@app.route('/vercontactos/', methods = ["GET","POST"])
+def vercontactos():
+    if request.method == "GET":
+        url = request.args.get("url", "")
+        print("URL solicitada: " + url)
+
+        return render_template("verRedContactos.html")
+    return render_template('verRedContactos.html')
 
 global driver
 if __name__ == "__main__":
     controller = accountController()
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='127.0.0.1', debug=True)
 

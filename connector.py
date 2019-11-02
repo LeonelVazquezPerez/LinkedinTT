@@ -42,8 +42,12 @@ def insertarUsuario(usuario):
                     indiceUsuario = cursor.fetchone()
                     print("Ultimo indice:" + str(indiceUsuario[0]))
 
+                    #se insertan las aptitudes
+                    insertarAptitudes(conexion,usuario.aptitudes,indiceUsuario)
                     #Se insertan los cargos
                     insertarCargos(conexion, usuario.cargos, indiceUsuario)
+                    #Se insertan las certificaciones
+                    insertarCertificaciones(conexion, usuario.certificaciones,indiceUsuario)
                     #Se insertan las escuelas
                     insertarEscuelas(conexion,usuario.escuelas,indiceUsuario)
 
@@ -114,6 +118,61 @@ def putRelUsuarioEscuela(conexion, idusu,idescuela):
     finally:
         print("Relaciones Insertadas")
 
+def insertarAptitudes(conexion, aptitudes, indiceUsuario):
+    try:
+        for aptitud in aptitudes:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO aptitudes(descripcion) VALUES (%s)"
+                cursor.execute(consulta, (aptitud))
+                conexion.commit()
+                print("aptitud insertada")
+                consulta = "select * from aptitudes order by idAptitud desc limit 1;"
+                cursor.execute(consulta)
+                indiceAptitud = cursor.fetchone()
+                putRelUsuarioAptitud(conexion, str(indiceUsuario[0]), str(indiceAptitud[0]))
+
+    finally:
+        print("cargos insertados")
+
+
+def putRelUsuarioAptitud(conexion, idusu,idAptitud):
+    try:
+        with conexion.cursor() as cursor:
+            consulta = "INSERT INTO usuario_has_aptitudes(usuario_idUsuario,aptitudes_idAptitud) VALUES (%s,%s)"
+            cursor.execute(consulta, (idusu, idAptitud))
+            conexion.commit()
+            return "Relacion insertada"
+    finally:
+        print("Relaciones Insertadas")
+
+def insertarCertificaciones(conexion, certificaciones, indiceUsuario):
+
+    try:
+        for certificacion in certificaciones:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO certificacion(nombre) VALUES (%s)"
+                cursor.execute(consulta, (certificacion))
+                conexion.commit()
+                print("certificacion insertada")
+                consulta = "select * from certificacion order by idCertificacion desc limit 1;"
+                cursor.execute(consulta)
+                indiceCargo = cursor.fetchone()
+                putRelUsuarioCertificacion(conexion, str(indiceUsuario[0]), str(indiceCargo[0]))
+
+    finally:
+        print("cargos insertados")
+
+
+def putRelUsuarioCertificacion(conexion, idusu,idCertificacion):
+    try:
+        with conexion.cursor() as cursor:
+            consulta = "INSERT INTO usuario_has_certificacion(usuario_idUsuario,certificacion_idCertificacion) VALUES (%s,%s)"
+            cursor.execute(consulta, (idusu, idCertificacion))
+            conexion.commit()
+            return "Relacion insertada"
+    finally:
+        print("Relaciones Insertadas")
+
 
 def borrarperfilbyurl(url):
     try:
@@ -124,6 +183,17 @@ def borrarperfilbyurl(url):
                 cursor.execute(consulta)
                 idUsuario = cursor.fetchone()[0] #es entero el id
                 print("idUsuario obtenido: " + str(idUsuario))
+
+                #Eliminamos las aptitudes
+                consulta = "SELECT aptitudes_idAptitud FROM usuario_has_aptitudes WHERE usuario_idUsuario = " + str(idUsuario) + ";"
+                cursor.execute(consulta)
+                for idaptitud in cursor.fetchall():
+                    print("idAptitud: " + str(idaptitud[0]))
+                    consulta = "DELETE FROM usuario_has_aptitudes WHERE aptitudes_idAptitud =" + str(idaptitud[0]) + ";"
+                    cursor.execute(consulta)
+                    consulta = "DELETE FROM aptitudes WHERE idAptitud =" + str(idaptitud[0]) + ";"
+                    cursor.execute(consulta)
+
                 #Eliminamos los cargos
                 consulta = "SELECT cargos_idCargo FROM usuario_has_cargos WHERE usuario_idUsuario = " + str(idUsuario) +";"
                 cursor.execute(consulta)
@@ -132,6 +202,24 @@ def borrarperfilbyurl(url):
                     consulta = "DELETE FROM usuario_has_cargos WHERE cargos_idCargo =" + str(idcargo[0]) + ";"
                     cursor.execute(consulta)
                     consulta = "DELETE FROM cargos WHERE idCargo =" + str(idcargo[0]) + ";"
+                    cursor.execute(consulta)
+                #Eliminamos las certificaciones
+                consulta = "SELECT certificacion_idCertificacion FROM usuario_has_certificacion WHERE usuario_idUsuario = " + str(idUsuario) + ";"
+                cursor.execute(consulta)
+                for idcertificacion in cursor.fetchall():
+                    print("idCertificacion: " + str(idcertificacion[0]))
+                    consulta = "DELETE FROM usuario_has_certificacion WHERE certificacion_idCertificacion =" + str(idcertificacion[0]) + ";"
+                    cursor.execute(consulta)
+                    consulta = "DELETE FROM certificacion WHERE idCertificacion =" + str(idcertificacion[0]) + ";"
+                    cursor.execute(consulta)
+                #Eliminamos las escuelas
+                consulta = "SELECT escuela_idEscuela FROM usuario_has_escuela WHERE usuario_idUsuario = " + str(idUsuario) + ";"
+                cursor.execute(consulta)
+                for idescuela in cursor.fetchall():
+                    print("idEscuela: "+ str(idescuela[0]))
+                    consulta = "DELETE FROM usuario_has_escuela WHERE escuela_idEscuela =" + str(idescuela[0]) + ";"
+                    cursor.execute(consulta)
+                    consulta = "DELETE FROM escuela WHERE idEscuela =" + str(idescuela[0]) + ";"
                     cursor.execute(consulta)
 
                 #Eliminamos el usuario
