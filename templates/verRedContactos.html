@@ -112,10 +112,10 @@
         <div id="container">
           <style>
             #graph-container {
-              top: 0;
-              bottom: 0;
-              left: 0;
-              right: 0;
+              top: 10%;
+              bottom: 2%;
+              left: 2%;
+              right: 2%;
               position: absolute;
             }
           </style>
@@ -126,21 +126,14 @@
         </div>
 
     <script>
-    /**
-     * This is a basic example on how to instantiate sigma. A random graph is
-     * generated and stored in the "graph" variable, and then sigma is instantiated
-     * directly with the graph.
-     *
-     * The simple instance of sigma is enough to make it render the graph on the on
-     * the screen, since the graph is given directly to the constructor.
-     */
     var s;
 
+    var data = {{ datos|tojson }};
 
+    var JSONObject = JSON.parse(data);
 
-    // Instantiate sigma:
     s = new sigma({
-      graph: g,
+      graph: JSONObject,
       container: 'graph-container'
     });
     </script>
@@ -154,11 +147,6 @@
     <!-- Custom and plugin javascript -->
     <script src="../../static/js/inspinia.js"></script>
     <script src="../../static/js/plugins/pace/pace.min.js"></script>
-    <script>
-        function recuperarJSON(vars){
-            return vars;
-        }
-        var g = recuperarJSON({{datos|tojson}});
-    </script>
+
     </body>
 </html>

@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, json
 app = Flask(__name__)
 from searchProfiles import searchprofiles
 from scrappyProfile import scrappyprofile
 from connector import borrarperfilbyurl
 from accountController import accountController
+import random
 
 @app.route('/')
 def index():
@@ -33,7 +34,6 @@ def resultados():
 def verperfil():
     if request.method == "GET":
         url = request.args.get("url", "")
-        urlG = url
         print("URL solicitada: "+url)
         userV = controller.selectAccount()
         perfil = scrappyprofile(url, userV)
@@ -45,7 +45,6 @@ def verperfil():
 def actualizarperfil():
     if request.method == "GET":
         url = request.args.get("url","")
-        urlG = url
         print("URL solicitada para actualizar: "+url)
         borrarperfilbyurl(url)
         userA = controller.selectAccount()
@@ -59,7 +58,7 @@ def actualizarperfil():
 def vercontactos():
     if request.method == "GET":
         url = request.args.get("url", "")
-        print("URL solicitada: " + url)
+        print("URL solicitada" + url)
 
         return render_template("verRedContactos.html", datos=url)
     return render_template('verRedContactos.html')

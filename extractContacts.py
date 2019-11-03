@@ -179,35 +179,47 @@ def searchContacts(driver,contacts):
 
     all = list(dict.fromkeys(allcontacts))
 
-    print("CONTACTOS")
-    i = 0
+    ids = []
+    contactids = []
+
+    for contact in all:
+        flag = 0
+        for id in ids:
+            if contact.url[28:-1] == id:
+                flag = 1
+                break
+
+        if flag == 0:
+            ids.append(contact.url[28:-1])
+            contactids.append(contact)
+
+
     datos = {}
     datos["nodes"] = []
     datos["edges"] = []
-    for contact in all:
-        aleatorio = random.randrange(11)
+
+    for contact in contactids:
         datos["nodes"].append(
             {
-                "id": contact.url,
-                "label": contact.name,
-                "x": aleatorio,
-                "y": aleatorio,
-                "size": 3
+                "id": str(contact.url[28:-1]),
+                "label": str(contact.name),
+                "x": random.randrange(11),
+                "y": random.randrange(11),
+                "size": 15
             }
         )
 
+    i = 0
+    for contact in all:
         datos["edges"].append(
             {
-                "id": i,
-                "source": contact.father,
-                "target": contact.url
+                "id": str(i),
+                "source": str(contact.father[28:-1]),
+                "target": str(contact.url[28:-1]),
+                "size": 10
             }
         )
         i += 1
-        print("**CONTACTO " + str(i))
-        print(str(contact.father))
-        print(str(contact.name))
-        print(str(contact.url))
 
     jsonstr = json.dumps(datos)
 
