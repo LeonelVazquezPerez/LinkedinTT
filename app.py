@@ -58,10 +58,10 @@ def actualizarperfil():
 @app.route('/vercontactos/', methods = ["GET","POST"])
 def vercontactos():
     if request.method == "GET":
-        #url = request.args.get("url", "")
-        #print("URL solicitada: " + url)
+        url = request.args.get("url", "")
+        print("URL solicitada: " + url)
 
-        return render_template("verRedContactos.html")
+        return render_template("verRedContactos.html", datos=url)
     return render_template('verRedContactos.html')
 
 global driver

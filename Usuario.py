@@ -14,6 +14,7 @@ class Usuario:
     extracto = ""
     logros = []
     logrosTitles = []
+    datosModelo = ""
     def __init__(self, name, company, url, imagen):
         self.name = name
         self.company = company

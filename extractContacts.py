@@ -1,4 +1,6 @@
 #IMPORT LIBRARIES FROM SELENIUM
+import random
+import json
 import time
 import urllib.request
 from urllib.parse import unquote
@@ -92,9 +94,9 @@ def extractContacts(driver,urlP):
         print(str(cont.name))
         print(str(cont.url))
 
-    searchContacts(driver,contacts)
+    datosModelo = searchContacts(driver,contacts)
 
-    return users
+    return users,datosModelo
 
 def searchContacts(driver,contacts):
     for contact in contacts:
@@ -179,10 +181,42 @@ def searchContacts(driver,contacts):
 
     print("CONTACTOS")
     i = 0
+    datos = {}
+    datos["nodes"] = []
+    datos["edges"] = []
     for contact in all:
+        aleatorio = random.randrange(11)
+        datos["nodes"].append(
+            {
+                "id": contact.url,
+                "label": contact.name,
+                "x": aleatorio,
+                "y": aleatorio,
+                "size": 3
+            }
+        )
+
+        datos["edges"].append(
+            {
+                "id": i,
+                "source": contact.father,
+                "target": contact.url
+            }
+        )
         i += 1
         print("**CONTACTO " + str(i))
         print(str(contact.father))
         print(str(contact.name))
         print(str(contact.url))
+
+    jsonstr = json.dumps(datos)
+
+    print("JSON : "+jsonstr)
+    return jsonstr
+
+
+
+
+
+
 

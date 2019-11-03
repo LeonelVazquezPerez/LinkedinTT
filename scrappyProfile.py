@@ -125,15 +125,10 @@ def scrappyprofile(url,user):
     intereses = selec.xpath('//*[starts-with(@class, "pv-entity__summary-info ember-view")]/h3/span/text()').extract()
     #print("Intereses: " + str(intereses))
     perfil.intereses = intereses
-    contactos = extractContacts(driver,url)
+    contactos,datosModelo = extractContacts(driver,url)
 
     perfil.contactos = contactos
-    i = 0
-    for user in perfil.contactos:
-        i += 1
-        #print("**CONTACTO " + str(i))
-        #print(str(user.name))
-        #print(str(user.imagen))
+
 
     #Obteniendo licencias y certificaciones
     certificaciones = selec.xpath('//*[starts-with(@class, "pv-certifications__summary-info pv-entity__summary-info pv-entity__summary-info--background-section pv-certifications__summary-info--has-extra-details")]/h3/text()').extract()
@@ -160,6 +155,7 @@ def scrappyprofile(url,user):
     #print("conjuntoLogros: " + str(conjuntoLogros))
     perfil.logrosTitles = logrosTitles[0::2]
     perfil.logros = conjuntoLogros
+    perfil.datosModelo = datosModelo
     connector.insertarUsuario(perfil)
     driver.close()
 
