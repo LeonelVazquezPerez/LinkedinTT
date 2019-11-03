@@ -48,8 +48,14 @@ def insertarUsuario(usuario):
                     insertarCargos(conexion, usuario.cargos, indiceUsuario)
                     #Se insertan las certificaciones
                     insertarCertificaciones(conexion, usuario.certificaciones,indiceUsuario)
+                    #Se insertan los contactos
+                    insertarContactos(conexion,usuario.contactos, indiceUsuario)
                     #Se insertan las escuelas
                     insertarEscuelas(conexion,usuario.escuelas,indiceUsuario)
+                    #Se insertan los intereses
+                    insertarIntereses(conexion, usuario.intereses,indiceUsuario)
+                    #Se insertan los logros
+                    insertarLogros(conexion,usuario.logros,usuario.logrosTitles,indiceUsuario)
 
                 else:
                     print("EL usuario ya existe")
@@ -91,6 +97,7 @@ def putRelUsuarioCargo(conexion,idusu,idcargo):
     finally:
         print("Relaciones Insertadas")
 
+
 def insertarEscuelas(conexion,escuelas,indiceUsuario):
     try:
         for escuela in escuelas:
@@ -117,6 +124,7 @@ def putRelUsuarioEscuela(conexion, idusu,idescuela):
             return "Relacion insertada"
     finally:
         print("Relaciones Insertadas")
+
 
 def insertarAptitudes(conexion, aptitudes, indiceUsuario):
     try:
@@ -145,6 +153,7 @@ def putRelUsuarioAptitud(conexion, idusu,idAptitud):
     finally:
         print("Relaciones Insertadas")
 
+
 def insertarCertificaciones(conexion, certificaciones, indiceUsuario):
 
     try:
@@ -168,6 +177,72 @@ def putRelUsuarioCertificacion(conexion, idusu,idCertificacion):
         with conexion.cursor() as cursor:
             consulta = "INSERT INTO usuario_has_certificacion(usuario_idUsuario,certificacion_idCertificacion) VALUES (%s,%s)"
             cursor.execute(consulta, (idusu, idCertificacion))
+            conexion.commit()
+            return "Relacion insertada"
+    finally:
+        print("Relaciones Insertadas")
+
+
+def insertarContactos(conexion, contactos, indiceUsuario):
+    try:
+        for contacto in contactos:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO contactos(url,usuario_idUsuario) VALUES (%s,%s)"
+                cursor.execute(consulta, (contacto.url, str(indiceUsuario[0])))
+                conexion.commit()
+                print("contacto insertado")
+
+    finally:
+        print("contactos insertados")
+
+def insertarIntereses(conexion, intereses,indiceUsuario):
+    try:
+        for interes in intereses:
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO interes(descripcion) VALUES (%s)"
+                cursor.execute(consulta, (interes))
+                conexion.commit()
+                print("interes insertado")
+                consulta = "select * from interes order by idInteres desc limit 1;"
+                cursor.execute(consulta)
+                indiceCargo = cursor.fetchone()
+                putRelUsuarioInteres(conexion, str(indiceUsuario[0]), str(indiceCargo[0]))
+
+    finally:
+        print("Intereses insertados")
+
+def putRelUsuarioInteres(conexion, idusu,idInteres):
+    try:
+        with conexion.cursor() as cursor:
+            consulta = "INSERT INTO usuario_has_intereses(interes_idInteres, usuario_idUsuario) VALUES (%s,%s)"
+            cursor.execute(consulta, (idInteres, idusu))
+            conexion.commit()
+            return "Relacion insertada"
+    finally:
+        print("Relaciones Insertadas")
+
+
+def insertarLogros(conexion,logros,logrosTitles, indiceUsuario):
+    try:
+        for i in range(len(logrosTitles)):
+            with conexion.cursor() as cursor:
+                consulta = "INSERT INTO logros(descripcion,titulo) VALUES (%s,%s)"
+                cursor.execute(consulta, (logros[i], logrosTitles[i]))
+                conexion.commit()
+                print("Logro insertado")
+                consulta = "select * from logros order by id_logro desc limit 1;"
+                cursor.execute(consulta)
+                indiceCargo = cursor.fetchone()
+                putRelUsuarioLogro(conexion, str(indiceUsuario[0]), str(indiceCargo[0]))
+
+    finally:
+        print("Intereses insertados")
+
+def putRelUsuarioLogro(conexion, idusu,idLogro):
+    try:
+        with conexion.cursor() as cursor:
+            consulta = "INSERT INTO usuario_has_logros(logros_idLogros,usuario_idUsuario) VALUES (%s,%s)"
+            cursor.execute(consulta, (idLogro, idusu))
             conexion.commit()
             return "Relacion insertada"
     finally:
@@ -212,6 +287,10 @@ def borrarperfilbyurl(url):
                     cursor.execute(consulta)
                     consulta = "DELETE FROM certificacion WHERE idCertificacion =" + str(idcertificacion[0]) + ";"
                     cursor.execute(consulta)
+                # Eliminamos los contactos
+                consulta = "DELETE FROM contactos WHERE usuario_idUsuario = " + str(idUsuario) + ";"
+                cursor.execute(consulta)
+
                 #Eliminamos las escuelas
                 consulta = "SELECT escuela_idEscuela FROM usuario_has_escuela WHERE usuario_idUsuario = " + str(idUsuario) + ";"
                 cursor.execute(consulta)
@@ -220,6 +299,26 @@ def borrarperfilbyurl(url):
                     consulta = "DELETE FROM usuario_has_escuela WHERE escuela_idEscuela =" + str(idescuela[0]) + ";"
                     cursor.execute(consulta)
                     consulta = "DELETE FROM escuela WHERE idEscuela =" + str(idescuela[0]) + ";"
+                    cursor.execute(consulta)
+
+                #Eliminamos los intereses
+                consulta = "SELECT interes_idInteres FROM usuario_has_intereses WHERE usuario_idUsuario = " + str(idUsuario) + ";"
+                cursor.execute(consulta)
+                for idinteres in cursor.fetchall():
+                    print("idInteres: " + str(idinteres[0]))
+                    consulta = "DELETE FROM usuario_has_intereses WHERE interes_idInteres =" + str(idinteres[0]) + ";"
+                    cursor.execute(consulta)
+                    consulta = "DELETE FROM interes WHERE idInteres =" + str(idinteres[0]) + ";"
+                    cursor.execute(consulta)
+
+                #Eliminamos los logros
+                consulta = "SELECT logros_idLogros FROM usuario_has_logros WHERE usuario_idUsuario = " + str(idUsuario) + ";"
+                cursor.execute(consulta)
+                for idlogro in cursor.fetchall():
+                    print("idLogros: " + str(idlogro[0]))
+                    consulta = "DELETE FROM usuario_has_logros WHERE logros_idLogros =" + str(idlogro[0]) + ";"
+                    cursor.execute(consulta)
+                    consulta = "DELETE FROM logros WHERE id_logro =" + str(idlogro[0]) + ";"
                     cursor.execute(consulta)
 
                 #Eliminamos el usuario
@@ -231,4 +330,5 @@ def borrarperfilbyurl(url):
             conexion.close()
     except (pymysql.err.OperationalError, pymysql.err.InternalError) as e:
         print("Ocurrió un error al conectar: ", e)
+
 
