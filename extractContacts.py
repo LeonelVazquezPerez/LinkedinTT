@@ -6,6 +6,7 @@ import urllib.request
 from urllib.parse import unquote
 from Usuario import Usuario
 from Usuario import UsuarioContact
+import math
 
 def extractContacts(driver,urlP):
     users = []
@@ -86,13 +87,14 @@ def extractContacts(driver,urlP):
     except Exception as e:
         print("No se puede acceder a contactos")
 
-    print("CONTACTOS PRINCIPALES")
-    i = 0
-    for cont in contacts:
-        i += 1
-        print("**CONTACTO " + str(i))
-        print(str(cont.name))
-        print(str(cont.url))
+    #print("CONTACTOS PRINCIPALES")
+    #i = 0
+    #for cont in contacts:
+        #i += 1
+        #print("**CONTACTO " + str(i))
+        #print(str(cont.name))
+        #print(str(cont.url))
+        #print(str(cont.imagen))
 
     datosModelo = searchContacts(driver,contacts)
 
@@ -198,16 +200,24 @@ def searchContacts(driver,contacts):
     datos["nodes"] = []
     datos["edges"] = []
 
+    i = 0
     for contact in contactids:
-        datos["nodes"].append(
-            {
-                "id": str(contact.url[28:-1]),
-                "label": str(contact.name),
-                "x": random.randrange(11),
-                "y": random.randrange(11),
-                "size": 15
-            }
-        )
+        node = {
+            "id": str(contact.url[28:-1]),
+            "label": str(contact.name),
+            "type": 'circle',
+            "image": {
+                'url': "../../static/img/" + str(contact.imagen),
+                'scale': 1.5
+            },
+            "x": math.cos(i) / 2,
+            "y": math.sin(i) / 2,
+            "size": 20
+        }
+
+        datos["nodes"].append(node)
+
+        i += 1
 
     i = 0
     for contact in all:

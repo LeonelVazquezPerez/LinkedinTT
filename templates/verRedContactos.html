@@ -59,6 +59,9 @@
     <script src="../../static/js/sigma/misc/sigma.misc.bindEvents.js"></script>
     <script src="../../static/js/sigma/misc/sigma.misc.bindDOMEvents.js"></script>
     <script src="../../static/js/sigma/misc/sigma.misc.drawHovers.js"></script>
+
+    <script src="../../static/js/sigma/sigma.renderers.customShapes/shape-library.js"></script>
+    <script src="../../static/js/sigma/sigma.renderers.customShapes/sigma.renderers.customShapes.js"></script>
 </head>
 
 <body class="">
@@ -126,6 +129,8 @@
         </div>
 
     <script>
+    sigma.utils.pkg('sigma.canvas.nodes');
+
     var s;
 
     var data = {{ datos|tojson }};
@@ -134,8 +139,17 @@
 
     s = new sigma({
       graph: JSONObject,
-      container: 'graph-container'
+      renderer: {
+        container: document.getElementById('graph-container'),
+        type: 'canvas'
+      },
+      settings: {
+        minNodeSize: 16,
+        maxNodeSize: 20,
+      }
     });
+    CustomShapes.init(s);
+    s.refresh();
     </script>
 
     <!-- Mainly scripts -->
