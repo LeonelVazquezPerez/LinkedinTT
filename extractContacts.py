@@ -96,11 +96,11 @@ def extractContacts(driver,urlP):
         #print(str(cont.url))
         #print(str(cont.imagen))
 
-    datosModelo = searchContacts(driver,contacts)
+    datosModelo = searchContacts(driver,contacts,urlP)
 
     return users,datosModelo
 
-def searchContacts(driver,contacts):
+def searchContacts(driver,contacts,urlP):
     for contact in contacts:
         try:
             driver.get(contact.url)
@@ -195,13 +195,47 @@ def searchContacts(driver,contacts):
             ids.append(contact.url[28:-1])
             contactids.append(contact)
 
+    occurrencies = []
+
+    for contact in contactids:
+        cont = 0
+        for contactAux in all:
+            if contact.url == contactAux.url:
+                cont += 1
+        occurrencies.append(cont)
+
+    orderedContact = []
+    manyContact = []
+
+    i = 0
+
+    for contact in contactids:
+        if occurrencies[i] == 1:
+            orderedContact.append(contact)
+        else:
+            manyContact.append(contact)
+
+        i += 1
+
+    orderedContact += manyContact
 
     datos = {}
     datos["nodes"] = []
     datos["edges"] = []
 
     i = 0
-    for contact in contactids:
+
+    for contact in orderedContact:
+
+        if urlP == contact.url:
+            x = 0
+            y = 0
+            color = 'MediumSeaGreen'
+        else:
+            x = math.cos((i * len(contactids) *.05) + i)
+            y = math.sin((i * len(contactids) *.05) + i)
+            color = 'white'
+
         node = {
             "id": str(contact.url[28:-1]),
             "label": str(contact.name),
@@ -210,9 +244,10 @@ def searchContacts(driver,contacts):
                 'url': "../../static/img/" + str(contact.imagen),
                 'scale': 1.5
             },
-            "x": math.cos(i) / 2,
-            "y": math.sin(i) / 2,
-            "size": 20
+            "x": x,
+            "y": y,
+            "size": 20,
+            "color": color
         }
 
         datos["nodes"].append(node)
@@ -220,18 +255,28 @@ def searchContacts(driver,contacts):
         i += 1
 
     i = 0
+
+    colors = ['red','blue','purple','black','orange','brown','gray','silver','maroon','olive','lime','aqua','navy','fuchsia']
+
     for contact in all:
         datos["edges"].append(
             {
                 "id": str(i),
                 "source": str(contact.father[28:-1]),
                 "target": str(contact.url[28:-1]),
-                "size": 10
+                "size": 13,
+                "color": random.choice(colors)
             }
         )
         i += 1
 
     jsonstr = json.dumps(datos)
+
+    contacts.clear()
+    all.clear()
+    contactids.clear()
+    orderedContact.clear()
+    manyContact.clear()
 
     print("JSON : "+jsonstr)
     return jsonstr
